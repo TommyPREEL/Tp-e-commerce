@@ -13,23 +13,27 @@ function getAllProducts(){
 }
 
 function getProductById(id){
-    const sql = `SELECT * FROM Products WHERE id =?`;
-    db.get(sql, [id], (err, row) => {
-        if (err) {
-            throw err;
-        }
-        res.json(row);
-    });
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM Products WHERE id =?`;
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                throw err;
+            }
+            reso(row);
+        });
+    })
 }
 
 function createProduct(product){
-    const sql = `INSERT INTO Products (name, description, price) VALUES (?,?,?)`;
-    db.run(sql, [product.name, product.description, product.price], (err) => {
-        if (err) {
-            throw err;
-        }
-        res.json({message: "Product created"});
-    });
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO Products (name, description, price) VALUES (?,?,?)`;
+        db.run(sql, [product.name, product.description, product.price], (err) => {
+            if (err) {
+                throw err;
+            }
+            res.json({message: "Product created"});
+        });
+    })
 }
 
 function updateProduct(id, product){
