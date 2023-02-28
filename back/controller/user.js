@@ -1,0 +1,3 @@
+function getAllUsers(req, res) {
+
+}
