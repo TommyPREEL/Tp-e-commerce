@@ -4,7 +4,7 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 
-const{ getAllProducts } = require('./models/products.js')
+const{ getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('./models/products.js')
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
@@ -19,10 +19,13 @@ app.get('/products', function(req, res) {
 });
 
 app.get('/products/details/:id', function(req, res) {
-  getProductById().then(product => {
+  getProductById(req.params.id).then(product => {
     res.json(product)
   })
 });
+
+app.get('/products/add', function(req, res) {})
+
 
 app.listen(5000, () => {
     console.log("Server start (http://localhost:5000/) !");

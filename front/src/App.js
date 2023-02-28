@@ -30,11 +30,6 @@ function App() {
 
 
 
-const json = {"products":[{"id":1,"name":"Livre","quantity":10,"description":"Premier de la série","price":7.5},{"id":2,"name":"Food","quantity":20,"description":"Je sais pas","price":2},{"id":3,"name":"Micro","quantity":5,"description":"Micro fort","price":49.9}]}
-// console.log(json.products);
-// console.log(JSON.stringify(json));
-let test = json.products[0].description;
-console.log(test);
 
 function handleClick(productId){
   console.log(productId);
