@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import ProductCard from './components/ProductCard';
 
 function App() {
-  const [backendData, setBackendData] = useState([{}]);
+  const [backendData, setBackendData] = useState({products:[]});
 
   // useEffect(() => {
   //   fetch("products").then(
@@ -21,8 +21,8 @@ function App() {
   useEffect(() => {
     fetch("products").then((response) => response.json()).then(
       data => {
-        console.log(data);
-        testtest = data;
+        // console.log(data);
+        // testtest = data;
         setBackendData(data);
       }
     )
@@ -43,7 +43,7 @@ function handleClick(productId){
 return(
   <div className='App'>
     {/* {typeof(testtest.products) === null ? <h1>Loading</h1> : <h1>{testtest.products.description}</h1>} */}
-    {json.products.map(function(product, i){
+    {backendData.products.map(function(product, i){
       return <a onClick={() => handleClick(product.id)}><ProductCard key={i} props={product}></ProductCard></a>
     })}
   </div>
