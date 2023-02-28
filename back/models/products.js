@@ -12,26 +12,51 @@ function getAllProducts(){
     })
 }
 
-// function getProductById(id){
-//     const sql = `SELECT * FROM Products WHERE id =?`;
-//     db.get(sql, [id], (err, row) => {
-//         if (err) {
-//             throw err;
-//         }
-//         res.json(row);
-//     });
-// }
+function getProductById(id){
+    const sql = `SELECT * FROM Products WHERE id =?`;
+    db.get(sql, [id], (err, row) => {
+        if (err) {
+            throw err;
+        }
+        res.json(row);
+    });
+}
 
-// function createProduct(product){
-//     const sql = `INSERT INTO Products (name, description, price) VALUES (?,?,?)`;
-//     db.run(sql, [product.name, product.description, product.price], (err) => {
-//         if (err) {
-//             throw err;
-//         }
-//         res.json({message: "Product created"});
-//     });
-// }
+function createProduct(product){
+    const sql = `INSERT INTO Products (name, description, price) VALUES (?,?,?)`;
+    db.run(sql, [product.name, product.description, product.price], (err) => {
+        if (err) {
+            throw err;
+        }
+        res.json({message: "Product created"});
+    });
+}
+
+function updateProduct(id, product){
+    const sql = `UPDATE Products SET name =?, description =?, price =? WHERE id =?`;
+    db.run(sql, [product.name, product.description, product.price, id], (err) => {
+        if (err) {
+            throw err;
+        }
+        res.json({message: "Product updated"});
+    });
+}
+
+function deleteProduct(id){
+    const sql = `DELETE FROM Products WHERE id =?`;
+    db.run(sql, [id], (err) => {
+        if (err) {
+            throw err;
+        }
+        res.json({message: "Product deleted"});
+    });
+}
+
 
 module.exports = {
-    getAllProducts
+    getAllProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
 }
