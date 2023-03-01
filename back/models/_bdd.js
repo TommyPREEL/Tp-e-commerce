@@ -1,5 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./db/tp_e_commerce.db", err => {
+const db = new sqlite3.Database("./db/tp_e_commerce3.db", err => {
     if (err) {
         return console.error(err.message);
     }

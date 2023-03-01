@@ -35,5 +35,9 @@ categoriesRouter.get('/delete/:id', function(req, res) {
         res.json(message)
     })
 });
+
+
+
+
   
 module.exports = categoriesRouter;
