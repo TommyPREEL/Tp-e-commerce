@@ -2,7 +2,7 @@ let express = require('express');
 let categoriesRouter = express.Router();
 
 const Categorie = require('../class/Categorie');
-const { getAllCategories, getCategorieById,  createCategorie,  updateCategorie,  deleteCategorie } = require('../models/categorie.js')
+const { getAllCategories, getCategorieById,  createCategorie,  updateCategorie,  deleteCategorie, getProductsByCategorie, deleteProductsInCategorie } = require('../models/categorie.js')
 
 categoriesRouter.get('/', function(req, res) {
     getAllCategories().then(categories => {
@@ -30,9 +30,20 @@ categoriesRouter.get('/update/:id', function(req, res) {
     })
 });
 
+
 categoriesRouter.get('/delete/:id', function(req, res) {
-    deleteCategorie(req.params.id).then(message => {
-        res.json(message)
+    deleteProductsInCategorie(req.params.id).then(message1 => {
+        if (message1 = 'Products in this category have been deleted') {
+            deleteCategorie(req.params.id).then(message2 => {
+                res.json(message2)
+            })
+        }     
+    })  
+});
+
+categoriesRouter.get('/details/:id/products', function(req, res) {
+    getProductsByCategorie(req.params.id).then(products => {
+        res.json(products)
     })
 });
   

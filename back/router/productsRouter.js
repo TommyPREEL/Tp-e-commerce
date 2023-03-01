@@ -2,7 +2,7 @@ let express = require('express');
 let productsRouter = express.Router();
 
 const Product = require('../class/Product');
-const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require('../models/products.js')
+const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, deleteProductFromCategorie ,AddCategorieToProduct} = require('../models/products.js')
 
 productsRouter.get('/', function(req, res) {
     getAllProducts().then(products => {
@@ -31,9 +31,23 @@ productsRouter.get('/update/:id', function(req, res) {
 });
 
 productsRouter.get('/delete/:id', function(req, res) {
-    deleteProduct(req.params.id).then(message => {
+    deleteProductFromCategorie(req.params.id).then(message1 => {
+        if (message1 = 'categorie Product deleted') {
+            deleteProduct(req.params.id).then(message2 => {
+                res.json(message2)
+            })
+        }     
+    })  
+});
+
+
+productsRouter.get('/add/categorie/:id/:id_categorie', function(req, res) {
+    AddCategorieToProduct(req.params.id, req.params.id_categorie).then(message => {
         res.json(message)
     })
 });
-  
+
+
+
+
 module.exports = productsRouter;
