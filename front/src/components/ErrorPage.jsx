@@ -21,6 +21,9 @@ export default function ErrorPage() {
             <Typography variant="h6">
               The page you’re looking for doesn’t exist.
             </Typography>
+            <Typography variant="h4">
+              IT DOESN'T EXIST.
+            </Typography>
             <Button variant="contained">Back Home</Button>
           </Grid>
           <Grid xs={6}>
