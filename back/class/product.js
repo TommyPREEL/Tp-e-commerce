@@ -13,7 +13,7 @@ class Product {
         }
 
     get id() {
-            return this.#id
+        return this.#id
     }
     get name() {
         return this.#name
@@ -27,6 +27,21 @@ class Product {
     get price() {
         return this.#price
     }
+    set id(id) {
+        this.#id = id
+    }
+    set name(name) {
+        this.#name = name
+    }
+    set quantity(quantity) {
+        this.#quantity = quantity
+    }
+    set description(description) {
+        this.#description = description
+    }
+    set price(price) {
+        this.#price = price
+    }
 }
 
-module.exports = product
+module.exports = Product

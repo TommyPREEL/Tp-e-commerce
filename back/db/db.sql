@@ -20,31 +20,34 @@ CREATE TABLE Users(
    mail TEXT,
    address TEXT,
    password TEXT,
+   is_admin BOOLEAN DEFAULT FALSE,
    PRIMARY KEY(id)
 );
 
 CREATE TABLE Orders(
-   id_1 INTEGER,
+   id_users INTEGER,
    id INTEGER,
    orders_date NUMERIC,
    total_price NUMERIC(15,2)  ,
-   PRIMARY KEY(id_1, id),
-   FOREIGN KEY(id_1) REFERENCES Users(id)
+   status TEXT,
+   PRIMARY KEY(id_users, id),
+   FOREIGN KEY(id_users) REFERENCES Users(id)
 );
 
 CREATE TABLE Products_Categories(
-   id INTEGER,
-   id_1 INTEGER,
-   PRIMARY KEY(id, id_1),
-   FOREIGN KEY(id) REFERENCES Products(id),
-   FOREIGN KEY(id_1) REFERENCES Categories(id)
+   id_products INTEGER,
+   id_categories INTEGER,
+   PRIMARY KEY(id_products, id_categories),
+   FOREIGN KEY(id_products) REFERENCES Products(id),
+   FOREIGN KEY(id_categories) REFERENCES Categories(id)
 );
 
 CREATE TABLE Product_Orders(
-   id INTEGER,
-   id_2 INTEGER,
-   id_1 INTEGER,
-   PRIMARY KEY(id, id_2, id_1),
-   FOREIGN KEY(id) REFERENCES Products(id),
-   FOREIGN KEY(id_2, id_1) REFERENCES Orders(id_1, id)
+   id_products INTEGER,
+   id_users INTEGER,
+   id_orders INTEGER,
+   quantity INTEGER,
+   PRIMARY KEY(id_products, id_users, id_orders),
+   FOREIGN KEY(id_products) REFERENCES Products(id),
+   FOREIGN KEY(id_users, id_orders) REFERENCES Orders(id_users, id)
 );
