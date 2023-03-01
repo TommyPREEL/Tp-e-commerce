@@ -19,41 +19,45 @@ function getProductById(id){
             if (err) {
                 throw err;
             }
-            reso(row);
+            resolve(row);
         });
     })
 }
 
 function createProduct(product){
     return new Promise((resolve, reject) => {
-        const sql = `INSERT INTO Products (name, description, price) VALUES (?,?,?)`;
-        db.run(sql, [product.name, product.description, product.price], (err) => {
+        const sql = `INSERT INTO Products (name, quantity, description, price) VALUES (?,?,?,?)`;
+        db.run(sql, [product.name, product.quantity, product.description, product.price], (err) => {
             if (err) {
                 throw err;
             }
-            res.json({message: "Product created"});
+            resolve({message: `Product ${product.name} created`});
         });
     })
 }
 
 function updateProduct(id, product){
-    const sql = `UPDATE Products SET name =?, description =?, price =? WHERE id =?`;
-    db.run(sql, [product.name, product.description, product.price, id], (err) => {
-        if (err) {
-            throw err;
-        }
-        res.json({message: "Product updated"});
-    });
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Products SET name =?, quantity=?, description =?, price =? WHERE id =?`;
+        db.run(sql, [product.name, product.quantity, product.description, product.price, id], (err) => {
+            if (err) {
+                throw err;
+            }
+            resolve({message: `Product ${product.name} updated`});
+        });
+    })
 }
 
 function deleteProduct(id){
-    const sql = `DELETE FROM Products WHERE id =?`;
-    db.run(sql, [id], (err) => {
-        if (err) {
-            throw err;
-        }
-        res.json({message: "Product deleted"});
-    });
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM Products WHERE id =?`;
+        db.run(sql, [id], (err) => {
+            if (err) {
+                throw err;
+            }
+            resolve({message: `Product deleted`});
+        });
+    })
 }
 
 
