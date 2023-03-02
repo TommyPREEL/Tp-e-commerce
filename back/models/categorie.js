@@ -60,11 +60,43 @@ function deleteCategorie(id){
     })
 }
 
+function deleteProductsInCategorie(id){
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM Products_Categories WHERE id_categories =?`;
+        db.run(sql, [id], (err) => {
+            if (err) {
+                throw err;
+            }
+            resolve({message: `Products in this category have been deleted`});
+        });
+    })
+}
+
+
+function getProductsByCategorie(id){
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT *
+        FROM Products p
+        JOIN Products_Categories pc ON p.id = pc.id_products
+        WHERE pc.id_categories = ?`;
+        db.all(sql, [id], (err, rows) => {
+            if (err) {
+                throw err;
+            }
+            resolve(rows);
+        });
+    })
+}
+
+
+
 
 module.exports = {
     getAllCategories,
     getCategorieById,
     createCategorie,
     updateCategorie,
-    deleteCategorie
+    deleteCategorie,
+    getProductsByCategorie,
+    deleteProductsInCategorie
 }

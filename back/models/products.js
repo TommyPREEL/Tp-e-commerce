@@ -1,3 +1,4 @@
+const Categorie = require("../class/Categorie.js");
 const db = require("./_bdd.js");
 
 function getAllProducts(){
@@ -48,10 +49,22 @@ function updateProduct(id, product){
     })
 }
 
+function deleteProductFromCategorie(id){
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM Products_Categories WHERE id_products = ?`; 
+        db.run(sql, [id], (err) => {
+            if (err) {
+                throw err;
+            }
+            resolve({message: `categorie Product deleted`});
+        });
+    })
+}
+
 function deleteProduct(id){
     return new Promise((resolve, reject) => {
-        const sql = `DELETE FROM Products WHERE id =?`;
-        db.run(sql, [id], (err) => {
+        const sql = `DELETE FROM Products WHERE id =?`; 
+        db.run(sql ,[id], (err) => {
             if (err) {
                 throw err;
             }
@@ -60,11 +73,24 @@ function deleteProduct(id){
     })
 }
 
+function AddCategorieToProduct(id, id_categorie){
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO Products_Categories (id_products, id_categories) VALUES (?,?)`;
+        db.run(sql, [id, id_categorie], (err) => {
+            if (err) {
+                throw err;
+            }
+            resolve({message: `Categorie  add for Product `});
+        });
+    })
+}
 
 module.exports = {
     getAllProducts,
     getProductById,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    deleteProductFromCategorie,
+    AddCategorieToProduct
 }
