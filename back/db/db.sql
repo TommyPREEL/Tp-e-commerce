@@ -51,3 +51,5 @@ CREATE TABLE Product_Orders(
    FOREIGN KEY(id_products) REFERENCES Products(id),
    FOREIGN KEY(id_users, id_orders) REFERENCES Orders(id_users, id)
 );
+
+INSERT INTO Users (firstname, lastname, mail, address, password, is_admin) VALUES ("Tommy", "PREEL", "tommy24590@gmail.com", "3 impasse Machin Truc 31300 Toulouse", "password", false)

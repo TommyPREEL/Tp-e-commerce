@@ -1,44 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import ProductCard from './components/ProductCard';
 import Header from './components/Header';
+import Home from './components/Home';
 
 function App() {
-  const [backendData, setBackendData] = useState({products:[]});
 
-  // useEffect(() => {
-  //   fetch("products").then(
-  //     response => response.json()
-  //   ).then(
-  //     data => {
-  //       setBackendData(data);
-  //     }
-  //   )
-  // }, []);
-
-  let testtest = null;
-
-  useEffect(() => {
-    fetch("products").then((response) => response.json()).then(
-      data => {
-        setBackendData(data);
-      }
-    )
-  }, []);
-
-
-function handleClick(productId){
-  console.log(productId);
-}
+  const [user, setUser] = useState(null);
 
 return(
   <div className='App'>
     <Header></Header>
-
-    {backendData.products.map(function(product, i){
-      return <a onClick={() => handleClick(product.id)}><ProductCard key={i} props={product}></ProductCard></a>
-    })}
+    <Home></Home>
   </div>
 )
 }

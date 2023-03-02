@@ -65,7 +65,7 @@ function connection(login, password){
         const sql = `SELECT * FROM Users WHERE mail =? AND password =?`;
         db.get(sql, [login, password], (err, row) => {
             if (err) {
-                resolve(false);
+                throw err;
             }
             resolve(row);
         })

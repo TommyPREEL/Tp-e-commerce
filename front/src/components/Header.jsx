@@ -42,12 +42,27 @@ function Header() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
   const navigate = useNavigate();
+
+  function handleClickPage(page){
+    switch(page){
+      case 'Products':
+          navigate('/products');
+          break;
+      case 'Categories':
+          navigate('/categories');
+          break;
+      default:
+          navigate('/erreurrr');
+  }
+  };
+
   function handleActionSelectedOnUser(setting){
     switch(setting){
         case 'Log in':
@@ -142,8 +157,9 @@ function Header() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
+                onClick={() => handleClickPage(page)}
                 key={page}
-                onClick={handleCloseNavMenu}
+                // onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
