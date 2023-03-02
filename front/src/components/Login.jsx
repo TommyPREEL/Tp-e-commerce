@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -28,13 +29,38 @@ function Copyright(props) {
 
 const theme = createTheme();
 
+
+
+
 function Login() {
+
+  const navigate = useNavigate();
+  
+  const [backendData, setBackendData] = React.useState({});
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    let inputs = {
+        mail: data.get('mail'),
+        password: data.get('password'),
+      }
+    fetch('/users/connect', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(inputs)
+
+    })
+    .then(response => response.json())
+    .then(dataBack => {
+      // stocker data dans le localStorage ?
+      setBackendData(dataBack);
+      navigate('/');
+    })
+    .catch(error => {
+      console.error(error);
     });
   };
 
@@ -61,10 +87,10 @@ function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="mail"
+              label="Mail Address"
+              name="mail"
+              autoComplete="mail"
               autoFocus
             />
             <TextField

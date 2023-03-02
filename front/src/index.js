@@ -6,11 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import Login from './components/Login';
 import Register from './components/Register';
 import ErrorPage from './components/ErrorPage';
+import ProductDetails from './components/ProductDetails';
+import CategoriesList from './components/CategoriesList';
 
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import ProductsList from './components/ProductsList';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,22 @@ const router = createBrowserRouter([
   {
     path: "/users/register",
     element: <Register />,
+  },
+  {
+    path: "/products",
+    element: <ProductsList />,
+  },
+  {
+    path: "/products/:id",
+    element: <ProductDetails/>,
+  },
+  {
+    path: "/categories",
+    element: <CategoriesList/>,
+  },
+  {
+    path: "/categories/:id/products",
+    element: <ProductsList/>,
   },
 ]);
 

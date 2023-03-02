@@ -7,6 +7,9 @@ let categoriesRouter = require('./router/categoriesRouter');
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+let session = require('express-session')
+
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 
 app.get('/', function(req, res) {
   res.render('home');
@@ -17,6 +20,8 @@ app.use('/products', productsRouter)
 app.use('/users', usersRouter)
 app.use('/categories', categoriesRouter)
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 /* Open the server */
 app.listen(5000, () => {
