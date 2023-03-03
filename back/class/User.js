@@ -2,16 +2,16 @@ class User {
     #id
     #firstname
     #lastname
-    #mail
+    #email
     #address
     #password
     #is_admin
 
-    constructor(id, firstname, lastname, mail, address, password, is_admin) {
+    constructor(id, firstname, lastname, email, address, password, is_admin) {
         this.#id = id
         this.#firstname = firstname
         this.#lastname = lastname
-        this.#mail = mail
+        this.#email = email
         this.#address = address
         this.#password = password
         this.#is_admin = is_admin
@@ -25,8 +25,8 @@ class User {
     get lastname() {
         return this.#lastname
     }
-    get mail() {
-        return this.#mail
+    get email() {
+        return this.#email
     }
     get address() {
         return this.#address
@@ -46,8 +46,8 @@ class User {
     set lastname(lastname) {
         this.#lastname = lastname
     }
-    set mail(mail) {
-        this.#mail = mail
+    set email(email) {
+        this.#email = email
     }
     set address(address) {
         this.#address = address

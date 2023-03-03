@@ -3,6 +3,7 @@ let app = express();
 let productsRouter = require('./router/productsRouter');
 let usersRouter = require('./router/usersRouter');
 let categoriesRouter = require('./router/categoriesRouter');
+let ordersRouter = require('./router/ordersRouter');
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -19,6 +20,7 @@ app.get('/', function(req, res) {
 app.use('/products', productsRouter)
 app.use('/users', usersRouter)
 app.use('/categories', categoriesRouter)
+app.use('/orders', ordersRouter)
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());

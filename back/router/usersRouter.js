@@ -41,7 +41,7 @@ usersRouter.get('/delete/:id', function(req, res) {
 });
 
 usersRouter.post('/connect', function(req, res) {
-    connection(req.body.mail, req.body.password).then(user => {
+    connection(req.body.email, req.body.password).then(user => {
         if(typeof(user) !== 'undefined') {
             req.session.user = user;
         }

@@ -46,5 +46,7 @@ categoriesRouter.get('/details/:id/products', function(req, res) {
         res.json(products)
     })
 });
+
+
   
 module.exports = categoriesRouter;

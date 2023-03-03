@@ -4,12 +4,14 @@ class Product {
     #quantity
     #description
     #price
-        constructor(id, name, quantity, description, price) {
+    #img
+        constructor(id, name, quantity, description, price,img) {
           this.id = id;
           this.name = name;
           this.quantity = quantity;
           this.description = description;
           this.price = price;
+          this.img = img;
         }
 
     get id() {
@@ -27,6 +29,9 @@ class Product {
     get price() {
         return this.#price
     }
+    get img() {
+        return this.#img
+    }
     set id(id) {
         this.#id = id
     }
@@ -41,6 +46,9 @@ class Product {
     }
     set price(price) {
         this.#price = price
+    }
+    set img(img) {
+        this.#img = img
     }
 }
 
