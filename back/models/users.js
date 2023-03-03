@@ -31,7 +31,8 @@ function createUser(user){
             if (err) {
                 throw err;
             }
-            resolve({message: `User ${product.name} created`});
+            resolve({message: `User created successfully`});
+
         })
     })
 }

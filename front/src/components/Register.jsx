@@ -12,13 +12,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from'react-router-dom';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        One ref
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,12 +30,39 @@ function Copyright(props) {
 const theme = createTheme();
 
 function Register() {
+
+  const navigate = useNavigate();
+
+  const [backendData, setBackendData] = React.useState({});
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    let inputs = {
+        email: data.get('email'),
+        password: data.get('password'),
+        address: (data.get('address')+" " + data.get('postalCode') + " " + data.get('town')),
+        lastname : data.get('lastName'),
+        firstname : data.get('firstName')
+      }
+    console.log(inputs);
+    fetch('/users/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(inputs)
+
+    })
+    .then(response => response.json())
+    .then(dataBack => {
+      // stocker data dans le localStorage ?
+      // setBackendData(dataBack);
+      localStorage.setItem('user', JSON.stringify(dataBack));
+      navigate('/');
+    })
+    .catch(error => {
+      console.error(error);
     });
   };
 
@@ -98,6 +126,36 @@ function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="address"
+                  label="Address"
+                  name="address"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12} sm={5}>
+                <TextField
+                  required
+                  fullWidth
+                  id="postalCode"
+                  label="Postal Code"
+                  name="postalCode"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12} sm={7}>
+                <TextField
+                  required
+                  fullWidth
+                  id="town"
+                  label="Town"
+                  name="town"
+                  autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>

@@ -7,7 +7,7 @@ function ProductsList({props}) {
     const [backendData, setBackendData] = useState({products:[]});
 
     useEffect(() => {
-        fetch("products").then((response) => response.json()).then(
+        fetch("/products").then((response) => response.json()).then(
           data => {
             setBackendData(data);
           }
@@ -17,7 +17,7 @@ function ProductsList({props}) {
   return (
     <div>
         {backendData.products.map(function(product, i){
-        return <Link to={`/products/details/${product.id}`}><ProductCard key={i} props={product}></ProductCard></Link>
+        return <Link to={`/products/${product.id}`}><ProductCard key={i} props={product}></ProductCard></Link>
         })}
     </div>
   );

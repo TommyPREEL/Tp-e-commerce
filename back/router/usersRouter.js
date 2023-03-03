@@ -20,10 +20,15 @@ usersRouter.get('/details/:id', function(req, res) {
     })
 });
 
-usersRouter.get('/create', function(req, res) {
-    const user1 = new User(1, "John", "Doe", "truc@machin.fr", "70 rue des champs 75000 Paris", "secret", false);
-    createUser(user1).then(message => {
-        res.json(message)
+usersRouter.post('/register', function(req, res) {
+    const user = new User(1, req.body.firstname, req.body.lastname, req.body.email, req.body.address, req.body.password, false);
+    createUser(user).then(message => {
+        if(message.message == 'User created successfully') {
+            connection(req.body.email, req.body.password).then(userData => {
+                req.session.user = userData;
+                res.json(userData)
+            })
+        }
     })
 });
 
@@ -53,9 +58,8 @@ usersRouter.get('/test', function(req, res) {
     res.json(req.session.user);
 });
 
-usersRouter.get('/disconnect', function(req, res) {
+usersRouter.get('/logout', function(req, res) {
     req.session.destroy();
-    res.json(message);
 });
   
 module.exports = usersRouter;

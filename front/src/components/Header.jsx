@@ -12,6 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import CardMedia from '@mui/material/CardMedia';
 
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
@@ -20,15 +21,16 @@ let settings = ['Log in', 'Sign up'];
 
 
 function Header() {
-  const [auth, setAuth] = React.useState(false);
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   React.useEffect(() => {
-    if (auth) {
-        settings = ['My Cart', 'My orders', 'Settings', 'Logout'];
+    if (localStorage.getItem("user") === null) {
+      settings = ['Log in', 'Sign up'];
     } else {
-        settings = ['Log in', 'Sign up'];
+      settings = ['My Cart', 'My orders', 'Settings', 'Logout'];
+      console.log(localStorage.getItem("user"));
     }
   });
 
@@ -48,7 +50,7 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  const navigate = useNavigate();
+  
 
   function handleClickPage(page){
     switch(page){
@@ -71,10 +73,34 @@ function Header() {
         case 'Sign up':
             navigate('/users/register');
             break;
+        case 'My Cart':
+          navigate('/cart');
+          break;
+        case 'My orders':
+          navigate('/orders');
+          break;
+        case 'Settings':
+          navigate('/settings');
+          break;
+        case 'Logout':
+          fetch('users/logout', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          localStorage.removeItem("user");
+          navigate('/');
+          break;
         default:
             navigate('/erreurrr');
     }
   };
+
+  let welcome;
+  if(localStorage.getItem("user") !== null){
+    welcome = <div style={{marginRight:10}}>{JSON.parse(localStorage.getItem("user")).lastname} {JSON.parse(localStorage.getItem("user")).firstname}</div>;
+  }
 
   return (
     <AppBar position="static">
@@ -96,7 +122,13 @@ function Header() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+          {/* <CardMedia
+            component="img"
+            height="50"
+            image="/public/logo192.png"
+            alt="logo"
+          /> */}
+            
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -166,7 +198,7 @@ function Header() {
               </Button>
             ))}
           </Box>
-
+          {welcome}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

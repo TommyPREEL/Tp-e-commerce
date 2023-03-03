@@ -29,9 +29,6 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-
-
-
 function Login() {
 
   const navigate = useNavigate();
@@ -56,7 +53,7 @@ function Login() {
     .then(response => response.json())
     .then(dataBack => {
       // stocker data dans le localStorage ?
-      setBackendData(dataBack);
+      localStorage.setItem('user', JSON.stringify(dataBack));
       navigate('/');
     })
     .catch(error => {
