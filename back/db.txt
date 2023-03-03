@@ -17,7 +17,7 @@ CREATE TABLE Users(
    id INTEGER,
    firstname TEXT,
    lastname TEXT,
-   mail TEXT,
+   email TEXT,
    address TEXT,
    password TEXT,
    PRIMARY KEY(id)

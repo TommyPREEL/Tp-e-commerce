@@ -84,7 +84,7 @@ function Register() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="email Address"
                   name="email"
                   autoComplete="email"
                 />
@@ -102,7 +102,7 @@ function Register() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={<Checkbox value="allowExtraemails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>

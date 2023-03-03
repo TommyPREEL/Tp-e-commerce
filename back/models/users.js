@@ -26,8 +26,8 @@ function getUserById(id){
 
 function createUser(user){
     return new Promise((resolve, reject) => {
-        const sql = `INSERT INTO Users (lastname, firstname, mail, address, password, is_admin) VALUES (?,?,?,?,?,?)`;
-        db.run(sql, [user.lastname, user.firstname, user.mail, user.address, user.password, user.is_admin], (err) => {
+        const sql = `INSERT INTO Users (lastname, firstname, email, address, password, is_admin) VALUES (?,?,?,?,?,?)`;
+        db.run(sql, [user.lastname, user.firstname, user.email, user.address, user.password, user.is_admin], (err) => {
             if (err) {
                 throw err;
             }
@@ -38,8 +38,8 @@ function createUser(user){
 
 function updateUser(user){
     return new Promise((resolve, reject) => {
-        const sql = `UPDATE Users SET name =?, mail =?, password =? WHERE id =?`;
-        db.run(sql, [user.name, user.mail, user.password, user.id], (err) => {
+        const sql = `UPDATE Users SET name =?, email =?, password =? WHERE id =?`;
+        db.run(sql, [user.name, user.email, user.password, user.id], (err) => {
             if (err) {
                 throw err;
             }
@@ -62,7 +62,7 @@ function deleteUserById(id){
 
 function connection(login, password){
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM Users WHERE mail =? AND password =?`;
+        const sql = `SELECT * FROM Users WHERE email =? AND password =?`;
         db.get(sql, [login, password], (err, row) => {
             if (err) {
                 throw err;

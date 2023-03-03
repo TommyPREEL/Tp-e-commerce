@@ -3,13 +3,15 @@ CREATE TABLE Products(
    name TEXT,
    quantity INTEGER,
    description TEXT,
-   price NUMERIC(15,2)  ,
+   price NUMERIC(15,2),
+   img text,
    PRIMARY KEY(id)
 );
 
 CREATE TABLE Categories(
    id INTEGER,
    name TEXT,
+   img text,
    PRIMARY KEY(id)
 );
 
@@ -17,7 +19,7 @@ CREATE TABLE Users(
    id INTEGER,
    firstname TEXT,
    lastname TEXT,
-   mail TEXT,
+   email TEXT,
    address TEXT,
    password TEXT,
    is_admin BOOLEAN DEFAULT FALSE,
@@ -25,31 +27,30 @@ CREATE TABLE Users(
 );
 
 CREATE TABLE Orders(
-   id_users INTEGER,
    id INTEGER,
+   id_users INTEGER,
    orders_date NUMERIC,
    total_price NUMERIC(15,2)  ,
    status TEXT,
-   PRIMARY KEY(id_users, id),
+   PRIMARY KEY(id),
    FOREIGN KEY(id_users) REFERENCES Users(id)
 );
 
 CREATE TABLE Products_Categories(
+   id INTEGER,
    id_products INTEGER,
    id_categories INTEGER,
-   PRIMARY KEY(id_products, id_categories),
+   PRIMARY KEY(id),
    FOREIGN KEY(id_products) REFERENCES Products(id),
    FOREIGN KEY(id_categories) REFERENCES Categories(id)
 );
 
 CREATE TABLE Product_Orders(
+   id INTEGER,
    id_products INTEGER,
-   id_users INTEGER,
    id_orders INTEGER,
    quantity INTEGER,
-   PRIMARY KEY(id_products, id_users, id_orders),
+   PRIMARY KEY(id),
    FOREIGN KEY(id_products) REFERENCES Products(id),
-   FOREIGN KEY(id_users, id_orders) REFERENCES Orders(id_users, id)
+   FOREIGN KEY(id_orders) REFERENCES Orders(id)
 );
-
-INSERT INTO Users (firstname, lastname, mail, address, password, is_admin) VALUES ("Tommy", "PREEL", "tommy24590@gmail.com", "3 impasse Machin Truc 31300 Toulouse", "password", false)

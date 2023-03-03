@@ -1,5 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
-const db = new sqlite3.Database("./db/tp_e_commerce3.db", err => {
+const db = new sqlite3.Database("./db/tp_e_commerce6.db", err => {
     if (err) {
         return console.error(err.message);
     }
@@ -25,7 +25,7 @@ const db = new sqlite3.Database("./db/tp_e_commerce3.db", err => {
 //    id INTEGER,
 //    firstname TEXT,
 //    lastname TEXT,
-//    mail TEXT,
+//    email TEXT,
 //    address TEXT,
 //    password TEXT,
 //    PRIMARY KEY(id)
