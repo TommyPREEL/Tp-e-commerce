@@ -29,9 +29,6 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-
-
-
 function Login() {
 
   const navigate = useNavigate();
@@ -42,7 +39,7 @@ function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let inputs = {
-        mail: data.get('mail'),
+        email: data.get('email'),
         password: data.get('password'),
       }
     fetch('/users/connect', {
@@ -56,7 +53,7 @@ function Login() {
     .then(response => response.json())
     .then(dataBack => {
       // stocker data dans le localStorage ?
-      setBackendData(dataBack);
+      localStorage.setItem('user', JSON.stringify(dataBack));
       navigate('/');
     })
     .catch(error => {
@@ -87,10 +84,10 @@ function Login() {
               margin="normal"
               required
               fullWidth
-              id="mail"
-              label="Mail Address"
-              name="mail"
-              autoComplete="mail"
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
               autoFocus
             />
             <TextField

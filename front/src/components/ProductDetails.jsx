@@ -1,30 +1,91 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from'react-router-dom';
 import { useParams } from "react-router-dom";
+import plus from "../Pictures/icon-plus.svg";
+import minus from "../Pictures/icon-minus.svg";
 
-export default function ProductDetails() {
+function ProductDetails() {
 
-    const {id} = useParams();
+  const {id} = useParams();
 
-    const [backendData, setBackendData] = useState({});
+  const [backendData, setBackendData] = useState({});
 
-    useEffect(() => {
-        fetch(`/products/details/${id}`).then((response) => response.json()).then(
-          data => {
-            console.log(data);
-            
-            setBackendData(data);
-          }
-        )
-      }, []);
+  const [quant, setQuant] = useState(1);
+  const [orderedQuant, setOrderedQuant] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+      fetch(`/products/details/${id}`).then((response) => response.json()).then(
+        data => {
+          console.log(data);
+          setBackendData(data);
+          setTotal(Number(data.price) * quant);
+        }
+      )
+    }, []);
+
+  useEffect(() => {
+    setTotal(quant * backendData.price);
+  }, [quant, backendData.price]);
+
+  const addQuant = () => {
+    setQuant(current => current + 1);
+    
+  };
+
+  const removeQuant = () => {
+    setQuant(quant - 1);
+  };
+
+  const resetQuant = () => {
+    setQuant(1);
+    setOrderedQuant(0);
+    setTotal(0);
+  };
+
+  function handleClickAddToCart() {
+    const items = {
+      name: backendData.name,
+      price: backendData.price,
+      quantity: quant,
+      total: total,
+    }
+    localStorage.setItem("cart", JSON.stringify(items));
+    console.log(localStorage.getItem("cart"));
+  }
+
 
   return (
-    <div>
-        <p>{backendData.name}</p>
-        <p>{backendData.description}</p>
-        <p>{backendData.price}</p>
-        <p>coucou</p>
-        <p>{id}</p>
+    <section className="description">
+      <h1>{backendData.name}</h1>
+      <p className="desc">
+        {backendData.description}
+      </p>
+      <div className="price">
+        <div className="main-tag">
+          <p>$ {backendData.price}</p>
+          Total : <p>$ {total}</p>
+        </div>
+      </div>
+      <div className="buttons">
+      <div className="amount">
+      <button className="minus" onClick={removeQuant} disabled={quant === 0}>
+        <img src={minus} alt="icon-minus" />
+      </button>
+      <p>{quant}</p>
+      <button className="plus" onClick={addQuant} disabled={quant === backendData.quantity}>
+        <img src={plus} alt="icon-plus" />
+      </button>
     </div>
+        <button
+          className="add-to-cart"
+          onClick={handleClickAddToCart}
+        >
+          {/* <CartIcon /> */}
+          add to cart
+        </button>
+      </div>
+    </section>
   );
 }
+export default ProductDetails;

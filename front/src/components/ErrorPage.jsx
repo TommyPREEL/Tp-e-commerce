@@ -1,8 +1,14 @@
 import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from "react-router-dom";
 
 export default function ErrorPage() {
+  const navigate = useNavigate();
+
+  function handleClickRedirection(){
+    navigate('/');
+  }
   return (
     <Box
       sx={{
@@ -16,15 +22,12 @@ export default function ErrorPage() {
         <Grid container spacing={2}>
           <Grid xs={6}>
             <Typography variant="h1">
-              404
+              What?
             </Typography>
             <Typography variant="h6">
-              The page you’re looking for doesn’t exist.
+              Good job ! You find an easter egg !
             </Typography>
-            <Typography variant="h4">
-              IT DOESN'T EXIST.
-            </Typography>
-            <Button variant="contained">Back Home</Button>
+            <Button variant="contained" onClick={handleClickRedirection}>Back Home</Button>
           </Grid>
           <Grid xs={6}>
             <img

@@ -13,7 +13,7 @@ function ProductCard({props}) {
           component="img"
           height="140"
           image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
+          alt={props.description}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

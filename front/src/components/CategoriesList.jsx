@@ -18,7 +18,7 @@ function CategoriesList() {
     <div>
         {backendData.categories.map(function(category, i){
         // return <a onClick={() => handleClick(product.id)}><ProductCard key={i} props={product}></ProductCard></a>
-        return <Link to={`/categories/${category.id}/products`}><CategoryCard key={i} props={category}></CategoryCard></Link>
+          return <Link to={`/categories/${category.id}/products`}><CategoryCard key={i} props={category}></CategoryCard></Link>
         })}
     </div>
   );
