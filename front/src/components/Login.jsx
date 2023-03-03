@@ -42,7 +42,7 @@ function Login() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     let inputs = {
-        mail: data.get('mail'),
+        email: data.get('email'),
         password: data.get('password'),
       }
     fetch('/users/connect', {
@@ -87,10 +87,10 @@ function Login() {
               margin="normal"
               required
               fullWidth
-              id="mail"
-              label="Mail Address"
-              name="mail"
-              autoComplete="mail"
+              id="email"
+              label="email Address"
+              name="email"
+              autoComplete="email"
               autoFocus
             />
             <TextField
