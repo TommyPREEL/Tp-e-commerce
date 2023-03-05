@@ -1,5 +1,6 @@
 let express = require('express');
 let app = express();
+const bodyParser = require("body-parser");
 let productsRouter = require('./router/productsRouter');
 let usersRouter = require('./router/usersRouter');
 let categoriesRouter = require('./router/categoriesRouter');
@@ -16,14 +17,15 @@ app.get('/', function(req, res) {
   res.render('home');
 });
 
+app.use(bodyParser.json());
+
 /* Use routers */
 app.use('/products', productsRouter)
 app.use('/users', usersRouter)
 app.use('/categories', categoriesRouter)
 app.use('/orders', ordersRouter)
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
+
 
 /* Open the server */
 app.listen(5000, () => {

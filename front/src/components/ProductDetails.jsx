@@ -46,6 +46,7 @@ function ProductDetails() {
     localStorage.removeItem('cart')
   };
 
+  const navigate = useNavigate();
   function handleClickAddToCart() {
     const items = {
       id: backendData.id,
@@ -57,6 +58,7 @@ function ProductDetails() {
     const cart = JSON.parse(localStorage.getItem('cart')) || {};
     cart[items.id] = items;
     localStorage.setItem('cart', JSON.stringify(cart));
+    navigate('/products', { state: { showSnackbar: true, message: `${items.quantity} ${items.name} added to the cart` }});
   }
 
   function handleClickCheckCart(){

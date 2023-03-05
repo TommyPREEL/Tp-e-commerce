@@ -9,6 +9,7 @@ import { useNavigate } from'react-router-dom';
 import plus from "../Pictures/icon-plus.svg";
 import minus from "../Pictures/icon-minus.svg";
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 // import Title from './Title';
 
 export default function Cart() {
@@ -25,10 +26,11 @@ export default function Cart() {
   }
 
   React.useEffect(() => {
+    if(localStorage.getItem("cart") !== null) {
     const rows = JSON.parse(localStorage.getItem("cart"))
+    let totalPriceItems = 0
     const arr = Object.values(rows).map(item => {
-      setTotalPrice(Number(totalPrice) + Number(item.total))
-      console.log(totalPrice)
+      totalPriceItems += item.total
       return {
         id: item.id,
         name: item.name,
@@ -38,38 +40,55 @@ export default function Cart() {
       };
     });
     setProducts(arr);
+    setTotalPrice(Number(totalPriceItems))
+  }
   }, [])
   
   function handleClickConnection() {
     navigate('/users/connect')
   }
-  function handleClickOrder() {
-    // fetch('/orders', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(inputs)
 
-    // })
-    // .then(response => response.json())
-    // .then(dataBack => {
-    //   // stocker data dans le localStorage ?
-    //   localStorage.setItem('user', JSON.stringify(dataBack));
-    //   // setUser(dataBack);
-    //   navigate('/');
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
+  function handleClickOrder() {
+    let inputs = {
+      idUser: JSON.parse(localStorage.getItem("user")).id,
+      total: totalPrice,
+      products: []
+    };
+
+    products.forEach(product => {
+      inputs.products.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity,
+        total: product.total,
+      });
+    });
+    console.log(JSON.stringify(inputs))
+    fetch('/orders/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(inputs)
+
+    })
+    .then(response => response.json())
+    .then(dataBack => {
+      localStorage.removeItem('cart');
+      navigate('/orders', { state: { showSnackbar: true, message: `Order created successfully` }});
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
 
   let command;
   if (localStorage.getItem("user") === null) {
-    command = <Button variant="contained" href="#contained-buttons" onClick={handleClickConnection}>Connect yourself !</Button>
+    command = <Button variant="contained" onClick={handleClickConnection}>Connect yourself !</Button>
   }else {
-    command = <Button variant="contained" href="#contained-buttons" onClick={handleClickOrder}>Do an order !</Button>
+    command = <Button variant="contained" onClick={handleClickOrder}>Do an order !</Button>
   }
 
   const [quant, setQuant] = React.useState(1);
@@ -103,22 +122,15 @@ export default function Cart() {
     localStorage.removeItem('cart')
   };
 
-  function handleClickAddToCart() {
-    // const items = {
-    //   id: backendData.id,
-    //   name: backendData.name,
-    //   price: backendData.price,
-    //   quantity: quant,
-    //   total: total,
-    // }
-    // const cart = JSON.parse(localStorage.getItem('cart')) || {};
-    // cart[items.id] = items;
-    // localStorage.setItem('cart', JSON.stringify(cart));
+  function handleClickDelete(row) {
+    const newTable = products.filter(item => item.id!== row.id);
+    setProducts(newTable);
+    navigate('/cart');
+    console.log(products)
   }
   return (
-    <div style={{width:'80%'}}>
+    <div style={{width:'80%'}}>{localStorage.getItem("cart") === null ? (<div>Cart empty</div>) : (
     <React.Fragment>
-      {/* <Title>Recent Orders</Title> */}
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -126,8 +138,7 @@ export default function Cart() {
             <TableCell>Unit Price</TableCell>
             <TableCell>Total Price</TableCell>
             {/* <TableCell>Quantity</TableCell> */}
-            <TableCell>Quantity</TableCell>
-            
+            <TableCell>Quantity</TableCell>  
           </TableRow>
         </TableHead>
         <TableBody>
@@ -150,13 +161,57 @@ export default function Cart() {
                   </div>
                 </div>
               </TableCell>
+              <TableCell>
+              <DeleteIcon onClick={() => handleClickDelete(row)}/>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      Total Price : ${totalPrice}
+    <div>Total Price : ${totalPrice}</div>
       {command}
-    </React.Fragment>
+    </React.Fragment>)}
+    <button onClick={resetQuant}>RESET</button>
     </div>
+  );
+}
+
+function Tableau(props) {
+  const [data, setData] = React.useState(props.data);
+
+  React.useEffect(() => {
+    setData(props.data);
+  }, [props.data]);
+
+  const handleModification = (index, newData) => {
+    const newsData = [...data];
+    newsData[index] = newData;
+    setData(newsData);
+  };
+
+  return (
+    <div>
+      {data.map((aData, index) => (
+        <Donnee key={index} donnee={aData} onModification={(newData) => handleModification(index, newData)} />
+      ))}
+    </div>
+  );
+}
+
+function Donnee(props) {
+  const [aData, setAData] = React.useState(props.aData);
+
+  React.useEffect(() => {
+    setAData(props.aData);
+  }, [props.aData]);
+
+  const handleModification = (event) => {
+    const newData = event.target.value;
+    setAData(newData);
+    props.onModification(newData);
+  };
+
+  return (
+    <input type="text" value={aData} onChange={handleModification} />
   );
 }

@@ -34,7 +34,7 @@ function createOrder(order){
     let year = date.getFullYear();
     let dateOrder = year+'-'+month+'-'+day;
         const sql = `INSERT INTO Orders (id_users,orders_date,total_price,status) VALUES (?,?,?,?)`;
-        db.run(sql, [order.id_users, dateOrder, order.total_price, "En attente" ], (err) => {
+        db.run(sql, [order.id_users, dateOrder, order.total_price, "WAITING_FOR_VALIDATION" ], (err) => {
             if (err) {
                 throw err;
             }
@@ -50,7 +50,7 @@ function createOrderProducts(idProduct, idOrder, quantity){
             if (err) {
                 throw err;
             }
-            resolve({message: `PRODUCTS X ORDERS okay `});
+            resolve({message: `PRODUCTS X ORDERS done `});
         });
     })
 }
