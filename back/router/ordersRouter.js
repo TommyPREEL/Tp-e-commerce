@@ -16,18 +16,23 @@ ordersRouter.get('/details/:id', function(req, res) {
     })
 });
 
-ordersRouter.get('/add', function(req, res) {
-    const order = new Order(1,3,1,50,1);
+ordersRouter.post('/add', function(req, res) {
+    // const order = new Order(1,3,1,50,1);
+
+    const order = new Order(1, req.body.idUser, 1, req.body.total, "waiting")
     createOrder(order).then(message => {
         if ( message = "Order created") {
-            getOrderId(order).then((orderId) => {
-                console.log(orderId)
-                createOrderProducts(2,orderId.id, 40).then((message) => {
+            getOrderId(order).then((order1) => {
+                const promises = req.body.products.map(product => { createOrderProducts(product.id, order1.id, product.quantity) } )
+                Promise.all(promises).then(message => {
+                    console.log('All rows in orderProducts successfully created');
                     res.json(message)
-                })
+                }).catch(err => { console.error(err) })
             })           
         }
     })
+    // const order = req.body;
+    console.log(order)
 });
 
 ordersRouter.get('/update/:id', function(req, res) {

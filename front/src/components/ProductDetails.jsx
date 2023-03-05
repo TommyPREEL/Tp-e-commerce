@@ -11,13 +11,14 @@ function ProductDetails() {
   const [backendData, setBackendData] = useState({});
 
   const [quant, setQuant] = useState(1);
+
   const [orderedQuant, setOrderedQuant] = useState(0);
+  
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
       fetch(`/products/details/${id}`).then((response) => response.json()).then(
         data => {
-          console.log(data);
           setBackendData(data);
           setTotal(Number(data.price) * quant);
         }
@@ -38,20 +39,30 @@ function ProductDetails() {
   };
 
   const resetQuant = () => {
-    setQuant(1);
-    setOrderedQuant(0);
-    setTotal(0);
+    // setQuant(1);
+    // setOrderedQuant(0);
+    // setTotal(0);
+    // localStorage.removeItem('cart');
+    localStorage.removeItem('cart')
   };
 
+  const navigate = useNavigate();
   function handleClickAddToCart() {
     const items = {
+      id: backendData.id,
       name: backendData.name,
       price: backendData.price,
       quantity: quant,
       total: total,
     }
-    localStorage.setItem("cart", JSON.stringify(items));
-    console.log(localStorage.getItem("cart"));
+    const cart = JSON.parse(localStorage.getItem('cart')) || {};
+    cart[items.id] = items;
+    localStorage.setItem('cart', JSON.stringify(cart));
+    navigate('/products', { state: { showSnackbar: true, message: `${items.quantity} ${items.name} added to the cart` }});
+  }
+
+  function handleClickCheckCart(){
+    console.log(JSON.parse(localStorage.getItem("cart")));
   }
 
 
@@ -85,7 +96,10 @@ function ProductDetails() {
           add to cart
         </button>
       </div>
+      <button onClick={resetQuant}>RESET</button>
+      <button onClick={handleClickCheckCart}>CHECK</button>
     </section>
+    
   );
 }
 export default ProductDetails;
