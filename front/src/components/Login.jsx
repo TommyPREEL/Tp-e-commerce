@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from'react-router-dom';
+// import ProjectContext from '../context/ProjectContext';
+
 
 function Copyright(props) {
   return (
@@ -27,9 +29,13 @@ function Copyright(props) {
   );
 }
 
+
+
 const theme = createTheme();
 
 function Login() {
+
+  // const {user, setUser} = React.useContext(ProjectContext);
 
   const navigate = useNavigate();
   
@@ -54,6 +60,7 @@ function Login() {
     .then(dataBack => {
       // stocker data dans le localStorage ?
       localStorage.setItem('user', JSON.stringify(dataBack));
+      // setUser(dataBack);
       navigate('/');
     })
     .catch(error => {

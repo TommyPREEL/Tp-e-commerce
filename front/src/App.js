@@ -7,16 +7,26 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RoutesIndex from './routes/index';
 import ProductsList from './components/ProductsList';
 
-import Home from './components/Home';
+import ProjectContext from './context/ProjectContext';
+
+import Home from './pages/Home';
 function App() {
+
 
   // const [user, setUser] = useState(null);
   // let navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const [userCart, setUserCart] = useState(null);
+
 return(
   <div>
       {/* <Router> */}
+      <ProjectContext.Provider value={{user, setUser,userCart, setUserCart}}>
         <Header/>
         <RoutesIndex />
+      </ProjectContext.Provider>
+        
       {/* </Router> */}
     {/* <RoutesIndex></RoutesIndex> */}
     {/* <Home></Home> */}

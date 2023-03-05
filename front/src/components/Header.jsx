@@ -12,7 +12,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CardMedia from '@mui/material/CardMedia';
+// import ProjectContext from '../context/ProjectContext';
+
 
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
@@ -21,6 +24,7 @@ let settings = ['Log in', 'Sign up'];
 
 
 function Header() {
+  // const {user, setUser} = React.useContext(ProjectContext);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -30,7 +34,6 @@ function Header() {
       settings = ['Log in', 'Sign up'];
     } else {
       settings = ['My Cart', 'My orders', 'Settings', 'Logout'];
-      console.log(localStorage.getItem("user"));
     }
   });
 
@@ -89,17 +92,20 @@ function Header() {
               'Content-Type': 'application/json'
             }
           })
+          // setUser(null);
           localStorage.removeItem("user");
           navigate('/');
           break;
         default:
-            navigate('/erreurrr');
+          navigate('/erreurrr');
     }
   };
 
   let welcome;
-  if(localStorage.getItem("user") !== null){
+  // if(localStorage.getItem("user") !== null){
+    if(localStorage.getItem("user") !== null){
     welcome = <div style={{marginRight:10}}>{JSON.parse(localStorage.getItem("user")).lastname} {JSON.parse(localStorage.getItem("user")).firstname}</div>;
+    // welcome = <div style={{marginRight:10}}>{user.lastname} {user.firstname}</div>;
   }
 
   return (
@@ -228,6 +234,9 @@ function Header() {
               ))}
             </Menu>
           </Box>
+          <IconButton onClick={() => handleActionSelectedOnUser("My Cart")} sx={{ p: 0 }} style={{marginLeft:10}}>
+            <ShoppingCartIcon />
+          </IconButton>
         </Toolbar>
       </Container>
     </AppBar>
