@@ -17,8 +17,6 @@ ordersRouter.get('/details/:id', function(req, res) {
 });
 
 ordersRouter.post('/add', function(req, res) {
-    // const order = new Order(1,3,1,50,1);
-
     const order = new Order(1, req.body.idUser, 1, req.body.total, "waiting")
     createOrder(order).then(message => {
         if ( message = "Order created") {
@@ -31,8 +29,6 @@ ordersRouter.post('/add', function(req, res) {
             })           
         }
     })
-    // const order = req.body;
-    console.log(order)
 });
 
 ordersRouter.get('/update/:id', function(req, res) {
