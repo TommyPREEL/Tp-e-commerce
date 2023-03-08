@@ -1,6 +1,11 @@
 import React, { useEffect, useState }from 'react';
 import { useNavigate } from'react-router-dom';
 
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+
+import '../styles/Settings.css';
+
 function Settings() {
 
     const navigate = useNavigate();
@@ -53,12 +58,30 @@ function Settings() {
 
     }
   return (
-    <div>
-      <p>Bie</p>
-      <input type="text" name="firstname" defaultValue={backendData.firstname} onChange={(event) => handleOnChange(event)}></input>
+    
+
+    <div class="formulaire">
+      <label htmlFor="firstName">First Name</label>
+            <InputText
+            type="text" name="firstname" defaultValue={backendData.firstname} onChange={(event) => handleOnChange(event)}
+            />
+      <label htmlFor="lastname">Lastname</label>
+            <InputText
+            type="text" name="lastname" defaultValue={backendData.lastname} onChange={(event) => handleOnChange(event)}
+            />
+      <label htmlFor="address">Address</label>
+            <InputText
+              type="text" name="address" defaultValue={backendData.address} onChange={(event) => handleOnChange(event)}
+            />
+      <label htmlFor="password">Password</label>
+            <InputText
+            type="text" name="password" defaultValue={backendData.password} onChange={(event) => handleOnChange(event)}
+            />
+      {/* <input type="text" name="firstname" defaultValue={backendData.firstname} onChange={(event) => handleOnChange(event)}></input>
       <input type="text" name="lastname" defaultValue={backendData.lastname} onChange={(event) => handleOnChange(event)}></input>
       <input type="text" name="address" defaultValue={backendData.address} onChange={(event) => handleOnChange(event)}></input>
-      <input type="text" name="password" defaultValue={backendData.password} onChange={(event) => handleOnChange(event)}></input>
+      <input type="text" name="password" defaultValue={backendData.password} onChange={(event) => handleOnChange(event)}></input> */}
+      
       <button onClick={handleClickConfirm}>Confirmation modif</button>
     </div>
   );

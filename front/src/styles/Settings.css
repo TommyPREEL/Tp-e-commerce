@@ -1,0 +1,86 @@
+/* Style pour les labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 20px;
+  }
+  
+  /* Style pour les champs de saisie */
+  input {
+    display: block;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    width: 25%;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+  
+  /* Style pour les champs de saisie en focus */
+  input:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+
+  /* Style pour le bouton */
+  button {
+    display: block;
+    margin-top: 1rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    background-color: #6366F1;
+    color: #fff;
+  }
+  
+  /* Style pour le bouton en hover */
+  button:hover {
+    background-color: #4338CA;
+    border-color: #4338CA;
+    color: #fff;
+  }
+  
+  /* Style pour le bouton en focus */
+  button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .formulaire {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+ 
+  
+
+  
+ 
