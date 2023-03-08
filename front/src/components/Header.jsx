@@ -100,10 +100,18 @@ function Header() {
           navigate('/erreurrr');
     }
   };
+  
+  function handleClickAdmin(){
+    navigate('/admin');
+  }
 
   let welcome;
+  let admin;
   // if(localStorage.getItem("user") !== null){
     if(localStorage.getItem("user") !== null){
+      if(JSON.parse(localStorage.getItem("user")).is_admin == 1){
+        admin = <div onClick={handleClickAdmin} style={{marginRight:10, cursor:'pointer', backgroundColor:'white', color:"#1976d2", padding:10, borderRadius:'20px'/*, boxShadow:'1px 2px 9px black'*/}}>Admin Dashboard</div>;
+      }
     welcome = <div style={{marginRight:10}}>{JSON.parse(localStorage.getItem("user")).lastname} {JSON.parse(localStorage.getItem("user")).firstname}</div>;
     // welcome = <div style={{marginRight:10}}>{user.lastname} {user.firstname}</div>;
   }
@@ -204,6 +212,7 @@ function Header() {
               </Button>
             ))}
           </Box>
+          {admin}
           {welcome}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
