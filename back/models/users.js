@@ -39,12 +39,12 @@ function createUser(user){
 
 function updateUser(user){
     return new Promise((resolve, reject) => {
-        const sql = `UPDATE Users SET name =?, email =?, password =? WHERE id =?`;
-        db.run(sql, [user.name, user.email, user.password, user.id], (err) => {
+        const sql = `UPDATE Users SET lastname =?, firstname=?, password =?, address= ? WHERE id =?`;
+        db.run(sql, [user.lastname, user.firstname, user.password , user.address, user.id], (err) => {
             if (err) {
                 throw err;
             }
-            resolve({message: `User ${product.name} updated`});
+            resolve({message: `User ${user.firstname} updated`});
         })
     })
 }
