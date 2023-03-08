@@ -8,6 +8,7 @@ import Cart from '../pages/Cart';
 import RouteUsers from './RouteUsers';
 import RouteProducts from './RouteProducts';
 import RouteCategories from './RouteCategories';
+import RouteAdmin from './RouteAdmin';
 
 function RoutesIndex() {
   return (
@@ -16,6 +17,7 @@ function RoutesIndex() {
       <Route path="/users/*" element={<RouteUsers/>} />
       <Route path="/products/*" element={<RouteProducts/>} />
       <Route path="/categories/*" element={<RouteCategories/>} />
+      <Route path="/admin/*" element={<RouteAdmin/>} />
       <Route path="/cart" element={<Cart/>} />
       <Route path="*" element={<ErrorPage/>} />
     </Routes>
