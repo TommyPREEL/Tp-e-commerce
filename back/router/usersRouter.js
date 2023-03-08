@@ -32,9 +32,9 @@ usersRouter.post('/register', function(req, res) {
     })
 });
 
-usersRouter.get('/update/:id', function(req, res) {
-    const user1 = new User(1, "John", "Doe", "truc@machin.fr", "70 rue des champs 75000 Paris", "secretchanged", false);
-    updateUser(req.params.id, product1).then(message => {
+usersRouter.post('/update/:id', function(req, res) {
+    const user = new User(req.params.id, req.body.firstname, req.body.lastname, "", req.body.address, req.body.password, false);
+    updateUser(user).then(message => {
         res.json(message);
     })
 });

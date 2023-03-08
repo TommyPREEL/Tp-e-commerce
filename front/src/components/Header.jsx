@@ -83,7 +83,7 @@ function Header() {
           navigate('/orders');
           break;
         case 'Settings':
-          navigate('/settings');
+          navigate('/users/settings');
           break;
         case 'Logout':
           fetch('users/logout', {
