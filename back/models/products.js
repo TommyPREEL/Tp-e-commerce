@@ -27,24 +27,24 @@ function getProductById(id){
 
 function createProduct(product){
     return new Promise((resolve, reject) => {
-        const sql = `INSERT INTO Products (name, quantity, description, price) VALUES (?,?,?,?)`;
-        db.run(sql, [product.name, product.quantity, product.description, product.price], (err) => {
+        const sql = `INSERT INTO Products (name, quantity, description, price, img) VALUES (?,?,?,?, ?)`;
+        db.run(sql, [product.name, product.quantity, product.description, product.price, product.img], (err) => {
             if (err) {
                 throw err;
             }
-            resolve({message: `Product ${product.name} created`});
+            resolve({message: `Product created`});
         });
     })
 }
 
-function updateProduct(id, product){
+function updateProduct(product){
     return new Promise((resolve, reject) => {
         const sql = `UPDATE Products SET name =?, quantity=?, description =?, price =? WHERE id =?`;
-        db.run(sql, [product.name, product.quantity, product.description, product.price, id], (err) => {
+        db.run(sql, [product.name, product.quantity, product.description, product.price, product.id], (err) => {
             if (err) {
                 throw err;
             }
-            resolve({message: `Product ${product.name} updated`});
+            resolve({message: `Product updated`});
         });
     })
 }

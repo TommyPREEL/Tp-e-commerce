@@ -45,7 +45,6 @@ function Register() {
         lastname : data.get('lastName'),
         firstname : data.get('firstName')
       }
-    console.log(inputs);
     fetch('/users/register', {
       method: 'POST',
       headers: {
