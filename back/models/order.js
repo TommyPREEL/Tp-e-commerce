@@ -26,6 +26,18 @@ function getOrderById(id){
     })
 }
 
+function getOrdersByUserId(id){
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM Orders WHERE id_users =?`;
+        db.all(sql, [id], (err, rows) => {
+            if (err) {
+                throw err;
+            }
+            resolve(rows);
+        });
+    })
+}
+
 function createOrder(order){
     return new Promise((resolve, reject) => {
     let date = new Date();
@@ -83,7 +95,14 @@ function updateOrder(id, order){
 
 function getProductsByOrder(id){
     return new Promise((resolve, reject) => {
-        const sql = `SELECT *
+        const sql = `
+        SELECT 
+        p.id as id,
+        p.name as name,
+        p.description as description,
+        p.price as price,
+        p.img as img,
+        po.quantity as quantity
         FROM Products p
         JOIN Product_Orders po ON po.id_products = p.id  
         WHERE po.id_orders = ?`;
@@ -106,5 +125,6 @@ module.exports = {
     createOrderProducts,
     getOrderId,
     updateOrder,
-    getProductsByOrder
+    getProductsByOrder,
+    getOrdersByUserId
 }

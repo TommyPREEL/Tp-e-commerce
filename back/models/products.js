@@ -27,7 +27,7 @@ function getProductById(id){
 
 function createProduct(product){
     return new Promise((resolve, reject) => {
-        const sql = `INSERT INTO Products (name, quantity, description, price, img) VALUES (?,?,?,?, ?)`;
+        const sql = `INSERT INTO Products (name, quantity, description, price, img) VALUES (?,?,?,?,?)`;
         db.run(sql, [product.name, product.quantity, product.description, product.price, product.img], (err) => {
             if (err) {
                 throw err;

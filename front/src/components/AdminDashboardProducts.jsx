@@ -16,19 +16,10 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
 import 'primereact/resources/primereact.css';                       // core css
 import 'primeicons/primeicons.css';                                 // icons
 import 'primeflex/primeflex.css';                                   // css utility
-import { TabMenu } from 'primereact/tabmenu';
 
 // import { CustomerService } from './service/CustomerService';
 
-export default function AdminDashboard() {
-
-    
-    const items = [
-        {label: 'Orders', icon: 'pi pi-fw pi-calendar'},
-        {label : 'Products', icon: 'pi pi-fw pi-home'}
-        // {label: 'Categories', icon: 'pi pi-fw pi-calendar'} // categories
-       
-    ];
+export default function AdminDashboardProducts() {
 
     // Empty product object (to be able to display products editions)
     const emptyProduct = {
@@ -253,15 +244,8 @@ export default function AdminDashboard() {
         </React.Fragment>
     );
 
-    const [tabIndex, setTabIndex] = useState(0)
-    function handleTabChange(index){
-        setTabIndex(index)
-    }
     return (
         <div>
-            <div className="card">
-                <TabMenu model={items} onTabChange={(e) => handleTabChange(e.index)}/>
-            </div>
             <Button onClick={() => setVisible(true)} label="New" icon="pi pi-plus" className="mr-2" />
             <Dialog header="Create a product" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} footer={footerContent}>
                 <div>
