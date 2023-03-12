@@ -13,13 +13,11 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import CardMedia from '@mui/material/CardMedia';
-// import ProjectContext from '../context/ProjectContext';
 
 
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
-let pages = ['Products', 'Categories'];
+let pages = ['Products'/*, 'Categories'*/];
 let settings = ['Log in', 'Sign up'];
 
 
@@ -83,7 +81,7 @@ function Header() {
           navigate('/orders');
           break;
         case 'Settings':
-          navigate('/users/settings');
+          navigate('/settings');
           break;
         case 'Logout':
           fetch('users/logout', {
@@ -92,9 +90,8 @@ function Header() {
               'Content-Type': 'application/json'
             }
           })
-          // setUser(null);
           localStorage.removeItem("user");
-          navigate('/');
+          navigate('/users/connect');
           break;
         default:
           navigate('/erreurrr');
@@ -107,20 +104,17 @@ function Header() {
 
   let welcome;
   let admin;
-  // if(localStorage.getItem("user") !== null){
     if(localStorage.getItem("user") !== null){
-      if(JSON.parse(localStorage.getItem("user")).is_admin == 1){
-        admin = <div onClick={handleClickAdmin} style={{marginRight:10, cursor:'pointer', backgroundColor:'white', color:"#1976d2", padding:10, borderRadius:'20px'/*, boxShadow:'1px 2px 9px black'*/}}>Admin Dashboard</div>;
+      if(JSON.parse(localStorage.getItem("user")).is_admin === 1){
+        admin = <div onClick={handleClickAdmin} style={{marginRight:10, cursor:'pointer', backgroundColor:'white', color:"#1976d2", padding:10, borderRadius:'20px'}}>Admin Dashboard</div>;
       }
     welcome = <div style={{marginRight:10}}>{JSON.parse(localStorage.getItem("user")).lastname} {JSON.parse(localStorage.getItem("user")).firstname}</div>;
-    // welcome = <div style={{marginRight:10}}>{user.lastname} {user.firstname}</div>;
   }
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -136,15 +130,7 @@ function Header() {
               textDecoration: 'none',
             }}
           >
-          {/* <CardMedia
-            component="img"
-            height="50"
-            image="/public/logo192.png"
-            alt="logo"
-          /> */}
-            
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -175,13 +161,12 @@ function Header() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleClickPage(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -198,13 +183,13 @@ function Header() {
               textDecoration: 'none',
             }}
           >
-            LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 onClick={() => handleClickPage(page)}
                 key={page}
+                style={{fontWeight:'bold'}}
                 // onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >

@@ -114,14 +114,6 @@ export default function Cart() {
     setQuant(quant - 1);
   }
 
-  const resetQuant = () => {
-    // setQuant(1);
-    // setOrderedQuant(0);
-    // setTotal(0);
-    // localStorage.removeItem('cart');
-    localStorage.removeItem('cart')
-  };
-
   function handleClickDelete(row) {
     const newTable = products.filter(item => item.id!== row.id);
     setProducts(newTable);
@@ -171,7 +163,6 @@ export default function Cart() {
     <div>Total Price : ${totalPrice}</div>
       {command}
     </React.Fragment>)}
-    <button onClick={resetQuant}>RESET</button>
     </div>
   );
 }

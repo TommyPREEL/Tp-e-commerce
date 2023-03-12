@@ -4,7 +4,15 @@ const db = require("./_bdd.js");
 
 function getAllOrders(){
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM Orders`;
+        const sql = `SELECT
+        orders.id,
+        orders.id_users,
+        orders.orders_date,
+        orders.total_price,
+        orders.status,
+        users.firstname || ' ' || users.lastname as username
+        FROM Orders
+        JOIN users ON orders.id_users = users.id`;
         db.all(sql, [], (err, rows) => {
             if (err) {
                 throw err;
@@ -26,6 +34,18 @@ function getOrderById(id){
     })
 }
 
+function getOrdersByUserId(id){
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM Orders WHERE id_users =? ORDER BY orders_date`;
+        db.all(sql, [id], (err, rows) => {
+            if (err) {
+                throw err;
+            }
+            resolve(rows);
+        });
+    })
+}
+
 function createOrder(order){
     return new Promise((resolve, reject) => {
     let date = new Date();
@@ -34,7 +54,7 @@ function createOrder(order){
     let year = date.getFullYear();
     let dateOrder = year+'-'+month+'-'+day;
         const sql = `INSERT INTO Orders (id_users,orders_date,total_price,status) VALUES (?,?,?,?)`;
-        db.run(sql, [order.id_users, dateOrder, order.total_price, "WAITING_FOR_VALIDATION" ], (err) => {
+        db.run(sql, [order.id_users, dateOrder, order.total_price, order.status ], (err) => {
             if (err) {
                 throw err;
             }
@@ -68,14 +88,14 @@ function getOrderId(order){
     })
 }
 
-function updateOrder(id, order){
+function updateOrder(order){
     return new Promise((resolve, reject) => {
         const sql = `UPDATE Orders SET status = ? WHERE id = ?`;
-        db.run(sql, [order.status, id], (err) => {
+        db.run(sql, [order.status, order.id], (err) => {
             if (err) {
                 throw err;
             }
-            resolve({message: `Order ${order.id} updated`});
+            resolve({message: `Order updated`});
         });
     })
 }
@@ -83,7 +103,14 @@ function updateOrder(id, order){
 
 function getProductsByOrder(id){
     return new Promise((resolve, reject) => {
-        const sql = `SELECT *
+        const sql = `
+        SELECT 
+        p.id as id,
+        p.name as name,
+        p.description as description,
+        p.price as price,
+        p.img as img,
+        po.quantity as quantity
         FROM Products p
         JOIN Product_Orders po ON po.id_products = p.id  
         WHERE po.id_orders = ?`;
@@ -106,5 +133,6 @@ module.exports = {
     createOrderProducts,
     getOrderId,
     updateOrder,
-    getProductsByOrder
+    getProductsByOrder,
+    getOrdersByUserId
 }

@@ -12,14 +12,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from'react-router-dom';
+import { useNavigate, Navigate } from'react-router-dom';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        One ref
+        The Lord of the Orders
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -33,8 +33,6 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const [backendData, setBackendData] = React.useState({});
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,7 +43,6 @@ function Register() {
         lastname : data.get('lastName'),
         firstname : data.get('firstName')
       }
-    console.log(inputs);
     fetch('/users/register', {
       method: 'POST',
       headers: {
@@ -56,8 +53,6 @@ function Register() {
     })
     .then(response => response.json())
     .then(dataBack => {
-      // stocker data dans le localStorage ?
-      // setBackendData(dataBack);
       localStorage.setItem('user', JSON.stringify(dataBack));
       navigate('/');
     })
@@ -66,8 +61,14 @@ function Register() {
     });
   };
 
+  const access = () => {
+    if(localStorage.getItem('user'))
+      return <Navigate to='/access_denied'></Navigate>
+  }
+
   return (
     <ThemeProvider theme={theme}>
+      {access()}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
