@@ -43,7 +43,7 @@ function AdminDashboardOrders() {
 
     const [statuses] = useState(['CANCELLED', 'DELIVERED', 'PAID', 'VALIDATED']);
 
-    const getSeverity = (status) => {
+    const getStatus = (status) => {
         switch (status) {
             case 'CANCELLED':
                 return 'danger';
@@ -64,7 +64,6 @@ function AdminDashboardOrders() {
         }
     };
 
-
     const bodyPrice = (rowData) => {
         const price = rowData.total_price;
 
@@ -76,11 +75,11 @@ function AdminDashboardOrders() {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
+        return <Tag value={rowData.status} severity={getStatus(rowData.status)} />;
     };
 
     const statusItemTemplate = (option) => {
-        return <Tag value={option} severity={getSeverity(option)} />;
+        return <Tag value={option} severity={getStatus(option)} />;
     };
 
 
@@ -121,6 +120,7 @@ function AdminDashboardOrders() {
             if(dataBack.message === 'Order updated') {
                 setDialog(false)
                 setUpdate(!update)
+                setSelectedOrder(emptyOrder)
             }
         })
         .catch(error => {
