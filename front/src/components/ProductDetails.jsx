@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from'react-router-dom';
 import { useParams } from "react-router-dom";
-import plus from "../Pictures/icon-plus.svg";
-import minus from "../Pictures/icon-minus.svg";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+import '../styles/productDetails.css';
 
 function ProductDetails() {
 
@@ -68,10 +69,12 @@ function ProductDetails() {
 
   return (
     <section className="description">
+    <div className="image-container">
+      <img src={backendData.img} alt={backendData.description} />
+    </div>
+    <div className="details-container">
       <h1>{backendData.name}</h1>
-      <p className="desc">
-        {backendData.description}
-      </p>
+      <p className="desc">{backendData.description}</p>
       <div className="price">
         <div className="main-tag">
           <p>$ {backendData.price}</p>
@@ -79,26 +82,21 @@ function ProductDetails() {
         </div>
       </div>
       <div className="buttons">
-      <div className="amount">
-      <button className="minus" onClick={removeQuant} disabled={quant === 0}>
-        <img src={minus} alt="icon-minus" />
-      </button>
-      <p>{quant}</p>
-      <button className="plus" onClick={addQuant} disabled={quant === backendData.quantity}>
-        <img src={plus} alt="icon-plus" />
-      </button>
-    </div>
-        <button
-          className="add-to-cart"
-          onClick={handleClickAddToCart}
-        >
-          {/* <CartIcon /> */}
-          add to cart
+        <div className="amount">
+          <button className="minus" onClick={removeQuant} disabled={quant === 0}>
+            -
+          </button>
+          <p>{quant}</p>
+          <button className="plus" onClick={addQuant} disabled={quant === backendData.quantity}>
+            +
+          </button>
+        </div>
+        <button className="add-to-cart" onClick={handleClickAddToCart}>add to cart
+        <ShoppingCartIcon />
         </button>
       </div>
-      <button onClick={resetQuant}>RESET</button>
-      <button onClick={handleClickCheckCart}>CHECK</button>
-    </section>
+    </div>
+  </section>
     
   );
 }
