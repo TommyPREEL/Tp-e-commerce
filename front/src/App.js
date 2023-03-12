@@ -5,7 +5,7 @@ import Header from './components/Header';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import Home from './components/Home';
 import RoutesIndex from './routes/index';
-import ProductsList from './components/ProductsList';
+
 
 import ProjectContext from './context/ProjectContext';
 

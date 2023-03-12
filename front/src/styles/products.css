@@ -1,0 +1,13 @@
+parent-image-element {
+    width: 100px;
+   }
+   
+   image {
+    width: 100%;
+    max-height: 100px;
+   }
+
+   .p-grid .p-col-3 {
+    flex-basis: 25%;
+    max-width: 25%;
+  }
