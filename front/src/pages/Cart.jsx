@@ -1,208 +1,140 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import React, { useState, useEffect, useRef } from 'react';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { useNavigate } from'react-router-dom';
-import plus from "../Pictures/icon-plus.svg";
-import minus from "../Pictures/icon-minus.svg";
-import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-// import Title from './Title';
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { Toast } from 'primereact/toast';
 
 export default function Cart() {
 
   let navigate = useNavigate();
 
-  const [totalPrice, setTotalPrice] = React.useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [products, setProducts] = useState([])
+  const toast = useRef(null);
 
-  const [products, setProducts] = React.useState([])
-  
-  function preventDefault(event) {
-    event.preventDefault();
-    console.log(products)
-  }
-
-  React.useEffect(() => {
+  useEffect(() => {
     if(localStorage.getItem("cart") !== null) {
-    const rows = JSON.parse(localStorage.getItem("cart"))
-    let totalPriceItems = 0
-    const arr = Object.values(rows).map(item => {
-      totalPriceItems += item.total
-      return {
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        total: item.total,
-      };
-    });
-    setProducts(arr);
-    setTotalPrice(Number(totalPriceItems))
-  }
+        const rows = JSON.parse(localStorage.getItem("cart"))
+        let totalPriceItems = 0
+        const arr = Object.values(rows).map(item => {
+        totalPriceItems += item.total
+        return {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            total: item.total,
+        };
+        });
+        setProducts(arr);
+        setTotalPrice(Number(totalPriceItems))
+    }
   }, [])
-  
-  function handleClickConnection() {
-    navigate('/users/connect')
-  }
 
-  function handleClickOrder() {
-    let inputs = {
-      idUser: JSON.parse(localStorage.getItem("user")).id,
-      total: totalPrice,
-      products: []
-    };
+    function handleClickConnection() {
+        navigate('/users/connect')
+    }
 
-    products.forEach(product => {
-      inputs.products.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: product.quantity,
-        total: product.total,
-      });
-    });
-    console.log(JSON.stringify(inputs))
-    fetch('/orders/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(inputs)
-
-    })
-    .then(response => response.json())
-    .then(dataBack => {
-      localStorage.removeItem('cart');
-      navigate('/orders', { state: { showSnackbar: true, message: `Order created successfully` }});
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
-
+    function handleClickOrder() {
+        if(!localStorage.getItem('cart')){
+          toast.current.show({severity:'error', summary: 'Error', detail:'Your cart is empty', life: 3000});
+        }else{
+            let inputs = {
+            idUser: JSON.parse(localStorage.getItem("user")).id,
+            total: totalPrice,
+            products: []
+        };
+        products.forEach(product => {
+            inputs.products.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            total: product.total,
+            });
+        });
+        console.log(JSON.stringify(inputs))
+        fetch('/orders/add', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputs)
+        })
+        .then(response => response.json())
+        .then(dataBack => {
+            localStorage.removeItem('cart');
+            navigate('/orders', { state: { showSnackbar: true, message: `Order created successfully` }});
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        }
+    }
 
   let command;
   if (localStorage.getItem("user") === null) {
-    command = <Button variant="contained" onClick={handleClickConnection}>Connect yourself !</Button>
+    command = <Button className='flex mt-2' onClick={handleClickConnection}>Connect yourself !</Button>
   }else {
-    command = <Button variant="contained" onClick={handleClickOrder}>Do an order !</Button>
+    command = <Button className='flex mt-2' onClick={handleClickOrder}>Do an order !</Button>
   }
 
-  const [quant, setQuant] = React.useState(1);
+  const bodyPrice = (rowData) => {
+    return `$${rowData.price}`;
+  }
 
-  // const [orderedQuant, setOrderedQuant] = React.useState(0);
-  
-  // const [total, setTotal] = React.useState(0);
+  const bodyTotal = (rowData) => {
+    return `$${rowData.total}`;
+  }
 
-  // React.useEffect(() => {
-  //         // setTotal(Number(data.price) * quant);
-  // },[])
+  const deleteCart = () => {
+    localStorage.removeItem('cart')
+    setDeleteDialog(false);
+    window.location.reload();
+    // navigate('/cart');
+    // console.log(products)
+    // toast.current.show({severity:'error', summary: 'Error', detail:'Cart removed', life: 3000});
+  }
 
-    // React.useEffect(() => {
-    // setTotal(quant * backendData.price);
-  // }, [quant, backendData.price]);
-
-  const addQuant = (row) => {
-   row.quantity = row.quantity + 1;
-   localStorage.setItem("cart", JSON.stringify(products));
+  const hideDeleteDialog = () => {
+    setDeleteDialog(false);
   };
 
-  const removeQuant = () => {
-    setQuant(quant - 1);
-  }
+  const handleClickDelete = () => {
+    setDeleteDialog(true);
+  };
 
-  function handleClickDelete(row) {
-    const newTable = products.filter(item => item.id!== row.id);
-    setProducts(newTable);
-    navigate('/cart');
-    console.log(products)
-  }
-  return (
-    <div style={{width:'80%'}}>{localStorage.getItem("cart") === null ? (<div>Cart empty</div>) : (
+  const deleteDialogFooter = (
     <React.Fragment>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Unit Price</TableCell>
-            <TableCell>Total Price</TableCell>
-            {/* <TableCell>Quantity</TableCell> */}
-            <TableCell>Quantity</TableCell>  
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {products.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>${row.price}</TableCell>
-              <TableCell>${row.total}</TableCell>
-              {/* <TableCell>{row.quantity}</TableCell> */}
-              <TableCell> {/* align="right"*/}
-              <div className="buttons">
-                <div className="amount" style={{display: 'flex'}}>
-                  <button className="minus" onClick={() => removeQuant(row)} disabled={quant === 1}>
-                    <img src={minus} alt="icon-minus" />
-                  </button>
-                  <p>{row.quantity}</p>
-                  <button className="plus" onClick={() => addQuant(row)} disabled={quant === 100}>
-                    <img src={plus} alt="icon-plus" />
-                  </button>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>
-              <DeleteIcon onClick={() => handleClickDelete(row)}/>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    <div>Total Price : ${totalPrice}</div>
-      {command}
-    </React.Fragment>)}
-    </div>
+        <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteDialog} />
+        <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteCart} />
+    </React.Fragment>
   );
-}
-
-function Tableau(props) {
-  const [data, setData] = React.useState(props.data);
-
-  React.useEffect(() => {
-    setData(props.data);
-  }, [props.data]);
-
-  const handleModification = (index, newData) => {
-    const newsData = [...data];
-    newsData[index] = newData;
-    setData(newsData);
-  };
 
   return (
-    <div>
-      {data.map((aData, index) => (
-        <Donnee key={index} donnee={aData} onModification={(newData) => handleModification(index, newData)} />
-      ))}
+    <div className="card m-5">
+      <Toast ref={toast} />
+        <Dialog visible={deleteDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteDialogFooter} onHide={hideDeleteDialog}>
+          <div className="confirmation-content">
+            <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                <span>
+                    Are you sure you want to remove your cart ?
+                </span>
+          </div>
+        </Dialog>
+        <div className='mb-2' style={{}}>Your cart items :</div>
+        <DataTable value={products} tableStyle={{ minWidth: '50rem' }}>
+            <Column field="name" header="Name"></Column>
+            <Column body={bodyPrice} header="Unit price"></Column>
+            <Column field="quantity" header="Quantity"></Column>
+            <Column body={bodyTotal} header="Total"></Column>
+        </DataTable>
+        <div className='mt-2' style={{right:0}}>Total : ${totalPrice}</div>
+        <Button className='mt-2' icon="pi pi-trash" severity="danger" onClick={handleClickDelete}>Remove your cart</Button>
+        {command}
     </div>
-  );
-}
-
-function Donnee(props) {
-  const [aData, setAData] = React.useState(props.aData);
-
-  React.useEffect(() => {
-    setAData(props.aData);
-  }, [props.aData]);
-
-  const handleModification = (event) => {
-    const newData = event.target.value;
-    setAData(newData);
-    props.onModification(newData);
-  };
-
-  return (
-    <input type="text" value={aData} onChange={handleModification} />
   );
 }

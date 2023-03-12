@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, Navigate } from'react-router-dom';
+import { Toast } from 'primereact/toast';
 // import ProjectContext from '../context/ProjectContext';
 
 
@@ -33,31 +34,38 @@ const theme = createTheme();
 
 function Login() {
 
+  const toast = React.useRef(null);
+
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    let inputs = {
-        email: data.get('email'),
-        password: data.get('password'),
-      }
-    fetch('/users/connect', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(inputs)
+    if(data.get('email') === '' || data.get('password') === ''){
+      toast.current.show({severity:'error', summary: 'Error', detail:'Please fill all fields', life: 3000});
+    }else{
+      let inputs = {
+          email: data.get('email'),
+          password: data.get('password'),
+        }
+      fetch('/users/connect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(inputs)
 
-    })
-    .then(response => response.json())
-    .then(dataBack => {
-      localStorage.setItem('user', JSON.stringify(dataBack));
-      navigate('/');
-    })
-    .catch(error => {
-      console.error(error);
-    });
+      })
+      .then(response => response.json())
+      .then(dataBack => {
+        localStorage.setItem('user', JSON.stringify(dataBack));
+        navigate('/');
+      })
+      .catch(error => {
+        console.error(error);
+        toast.current.show({severity:'error', summary: 'Error', detail:'Bad credentials', life: 3000});
+      });
+    }
   };
  
   const access = () => {
@@ -68,6 +76,7 @@ function Login() {
   return (
     <ThemeProvider theme={theme}>
       {access()}
+      <Toast ref={toast} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

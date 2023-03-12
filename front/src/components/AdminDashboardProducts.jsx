@@ -244,6 +244,16 @@ export default function AdminDashboardProducts() {
         </React.Fragment>
     );
 
+    const bodyPrice = (rowData) => {
+        const price = rowData.price;
+
+        return (
+            <div className="flex align-items-center gap-2">
+                <span>${price}</span>
+            </div>
+        );
+    };
+
     return (
         <div>
             <Button onClick={() => setVisible(true)} label="New" icon="pi pi-plus" className="mr-2" />
@@ -299,7 +309,7 @@ export default function AdminDashboardProducts() {
             </Dialog>
             <DataTable value={products} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="name" header="Name" style={{ width: '20%' }}></Column>
-                <Column field="price" header="Unit Price" style={{ width: '20%' }}></Column>
+                <Column body={bodyPrice} header="Unit Price" style={{ width: '20%' }}></Column>
                 <Column field="description" header="Description" style={{ width: '20%' }}></Column>
                 <Column field="quantity" header="Quantity" style={{ width: '20%' }}></Column>
                 <Column body={modificationButtons} header="Modification" style={{ width: '20%' }}></Column>

@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, Navigate } from'react-router-dom';
+import { Toast } from 'primereact/toast';
 
 function Copyright(props) {
   return (
@@ -31,12 +32,17 @@ const theme = createTheme();
 
 function Register() {
 
+  const toast = React.useRef(null);
+
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    let inputs = {
+    if(data.get('email') === '' || data.get('password') === '' || data.get('address') === '' || data.get('postalCode') === '' || data.get('town') === '' || data.get('lastName') === '' || data.get('firstName') === ''){
+      toast.current.show({severity:'error', summary: 'Error', detail:'Please fill all fields', life: 3000});
+    }else{
+       let inputs = {
         email: data.get('email'),
         password: data.get('password'),
         address: (data.get('address')+" " + data.get('postalCode') + " " + data.get('town')),
@@ -49,7 +55,6 @@ function Register() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(inputs)
-
     })
     .then(response => response.json())
     .then(dataBack => {
@@ -59,6 +64,7 @@ function Register() {
     .catch(error => {
       console.error(error);
     });
+    }
   };
 
   const access = () => {
@@ -69,6 +75,7 @@ function Register() {
   return (
     <ThemeProvider theme={theme}>
       {access()}
+      <Toast ref={toast} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
