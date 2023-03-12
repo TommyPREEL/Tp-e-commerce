@@ -16,10 +16,11 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
 import 'primereact/resources/primereact.css';                       // core css
 import 'primeicons/primeicons.css';                                 // icons
 import 'primeflex/primeflex.css';                                   // css utility
-
-// import { CustomerService } from './service/CustomerService';
+import { Toast } from 'primereact/toast';
 
 export default function AdminDashboardProducts() {
+
+    const toast = React.useRef(null);
 
     // Empty product object (to be able to display products editions)
     const emptyProduct = {
@@ -256,6 +257,7 @@ export default function AdminDashboardProducts() {
 
     return (
         <div>
+            <Toast ref={toast} />
             <Button onClick={() => setVisible(true)} label="New" icon="pi pi-plus" className="mr-2" />
             <Dialog header="Create a product" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} footer={footerContent}>
                 <div>
