@@ -1,0 +1,24 @@
+.description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10%;
+  }
+  
+
+  .minus {
+    font-size: 25px;
+  }
+
+
+  .plus {
+    font-size: 25px;
+  }
+  
+ 
