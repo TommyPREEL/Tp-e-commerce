@@ -6,7 +6,7 @@ const {getProductsByOrder, updateOrder, getAllOrders, getOrderById,  createOrder
 
 ordersRouter.get('/', function(req, res) {
     getAllOrders().then(orders => {
-      res.json(orders)
+      res.json({orders:orders})
     })
 });
 
@@ -28,7 +28,7 @@ ordersRouter.get('/:id', function(req, res) {
 })     
 
 ordersRouter.post('/add', function(req, res) {
-    const order = new Order(1, req.body.idUser, 1, req.body.total, "waiting")
+    const order = new Order(1, req.body.idUser, 1, req.body.total, "VALIDATED")
     createOrder(order).then(message => {
         if ( message = "Order created") {
             getOrderId(order).then((order1) => {
@@ -42,9 +42,9 @@ ordersRouter.post('/add', function(req, res) {
     })
 });
 
-ordersRouter.get('/update/:id', function(req, res) {
-    const order = new Order(1,3,1,50,"Expedié");
-    updateOrder(req.params.id, order).then(message => {
+ordersRouter.post('/update/:id', function(req, res) {
+    const order = new Order(req.params.id, 0, 1, 0, req.body.status)
+    updateOrder(order).then(message => {
         res.json(message)
     })
 });

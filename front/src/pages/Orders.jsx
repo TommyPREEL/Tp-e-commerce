@@ -3,39 +3,17 @@ import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
 
 export default function Orders() {
-
-    // const emptyOrder =
-    //     [
-    //         {
-    //           id: null,
-    //           id_users: null,
-    //           orders_date: '',
-    //           total_price: null,
-    //           status: '',
-    //           products: [
-    //             {
-    //                 id: null,
-    //                 name: '',
-    //                 description: '',
-    //                 quantity: null,
-    //                 price: null,
-    //                 img: null
-    //             }
-    //           ]
-    //         }
-    //       ];
     
     const [ orders, setOrders ] = useState(null);
     const [ update, setUpdate ] = useState(false);
-    const [ color, setColor ] = useState("#FCF7D2")
 
     function header(order){
         return(
             <>
-                <div className="flex p-2 justify-content-between" style={{backgroundColor: color}}>
-                    <div className='flex'>Order number : {order.id}</div>
-                    <div className='flex'>Total : ${order.total_price}</div>
-                    <div className='flex'>Order date : {order.orders_date}</div>
+                <div className="flex mt-3 justify-content-around">
+                    <div className='flex'><p style={{fontWeight:'bold'}}>Order number : {order.id}</p></div>
+                    <div className='flex'><p style={{fontWeight:'bold'}}>Order date : {order.orders_date}</p></div>
+                    <div className='flex'><p style={{fontWeight:'bold'}}>Total : ${order.total_price}</p></div>
                 </div>
                 <Divider />
             </>
@@ -46,7 +24,7 @@ export default function Orders() {
         return(
             <>
                 <Divider />
-                <div className='flex'>Status : {order.status}</div>
+                <div className='flex'><p style={{fontWeight:'bold'}}>Status : {order.status}</p></div>
             </>
         );
     };
@@ -60,22 +38,7 @@ export default function Orders() {
           })
           .then(response => response.json())
           .then(dataBack => {
-            switch(dataBack.status) {
-                case 'VALIDATED':
-                    setColor('#FCF7D2')
-                    break;
-                case 'DELIVERED':
-                    setColor('#DBFCD2')
-                    break;
-                case 'PAID':
-                    setColor('#D2D9FC')
-                    break;
-                case 'CANCELED':
-                    setColor('#FCD2D2')
-                    break;
-                default:
-                    break;
-            }
+            console.log(dataBack)
             setOrders(dataBack)
             if(orders === null){
                 setUpdate(!update)
@@ -86,12 +49,11 @@ export default function Orders() {
           });
     }, [update])
 
-    function ttt(product){
-        console.log(product)
-    }
-
-    function cardColor(order){
-        console.log(order)
+    const colors = {
+        'VALIDATED' : '#FCF7D2',
+        'DELIVERED' : '#DBFCD2',
+        'PAID' : '#D2D9FC',
+        'CANCELLED' : '#FCD2D2',
     }
 
     return (
@@ -99,19 +61,19 @@ export default function Orders() {
             {orders == null ? <div>Loading</div> :
             orders.map(function(order, i){
                 return <div className="card flex justify-content-center m-2">
-                    <Card footer={() => footer(order)} header={() => header(order)} className="md:w-25rem" style={{backgroundColor : color, width:'auto'}}>
+                    <Card footer={() => footer(order)} header={() => header(order)} className="md:w-25rem" style={{backgroundColor : colors[order.status], minWidth: 800}}>
                     <div className="card flex justify-content-center m-2" style={{fontWeight:'bold'}}>
-                        <div className="flex w-8 m-2" sty><span className="font-weight-bold">Product name</span></div>{/*img*/}
-                        <div className="flex w-5 m-2">Total price</div>
-                        <div className="flex m-2">quantity</div>
+                        <div className="flex w-8 m-2"><span className="font-weight-bold">Product name</span></div>{/*img*/}
+                        <div className="flex w-3 m-2">quantity</div>
+                        <div className="flex w-3 m-2">Total price</div>
                     </div>
                     {order == null ? <div>Loading</div> : 
                     order.products.map(function(product, i){
                             return <div className="card flex justify-content-center m-2">
-                                <div className="flex w-8 m-2" onClick={() => ttt(product)}>{product.name}</div>{/*img*/}
+                                <div className="flex w-8 m-2">{product.name}</div>{/*img*/}
                                 {/* <div>{product.name}</div> */}
-                                <div className="flex w-5 m-2">${product.price * product.quantity}</div>
-                                <div className="flex m-2">{product.quantity}</div>
+                                <div className="flex w-3 m-2">{product.quantity}</div>
+                                <div className="flex w-3 m-2">${product.price * product.quantity}</div>
                                 </div>
                     })}
                     </Card>

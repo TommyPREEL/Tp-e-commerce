@@ -120,7 +120,7 @@ export default function AdminDashboardProducts() {
             <Button label="Cancel" icon="pi pi-times" outlined onClick={handleClickNoAdd} className="p-button-text"/>
             <Button label="Save" icon="pi pi-check" onClick={handleClickYesAdd} autoFocus/>
         </React.Fragment>
-        );
+    );
 
     /*
     * Edit a product
