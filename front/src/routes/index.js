@@ -4,6 +4,7 @@ import { BrowserRouter as Router , Routes, Route } from 'react-router-dom';
 import ErrorPage from '../components/ErrorPage';
 import Home from '../pages/Home';
 import Cart from '../pages/Cart';
+import Orders from '../pages/Orders';
 
 import RouteUsers from './RouteUsers';
 import RouteProducts from './RouteProducts';
@@ -19,6 +20,7 @@ function RoutesIndex() {
       <Route path="/categories/*" element={<RouteCategories/>} />
       <Route path="/admin/*" element={<RouteAdmin/>} />
       <Route path="/cart" element={<Cart/>} />
+      <Route path="/orders" element={<Orders/>} />
       <Route path="*" element={<ErrorPage/>} />
     </Routes>
   );

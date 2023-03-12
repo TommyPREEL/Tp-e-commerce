@@ -2,22 +2,33 @@ let express = require('express');
 let ordersRouter = express.Router();
 
 const Order = require('../class/order');
-const {getProductsByOrder, updateOrder, getAllOrders, getOrderById,  createOrder, getOrderId , createOrderProducts} = require('../models/order.js')
+const {getProductsByOrder, updateOrder, getAllOrders, getOrderById,  createOrder, getOrderId , createOrderProducts, getOrdersByUserId} = require('../models/order.js')
 
 ordersRouter.get('/', function(req, res) {
-    getAllOrders().then(categories => {
-      res.json({categories:categories})
+    getAllOrders().then(orders => {
+      res.json({orders:orders})
     })
 });
 
-ordersRouter.get('/details/:id', function(req, res) {
-    getOrderById(req.params.id).then(categorie => {
-    res.json(categorie)
-    })
-});
+ordersRouter.get('/:id', function(req, res) {
+    getOrdersByUserId(req.params.id).then((orders) => {
+        let promises = [];
+        for (let order of orders) {
+            let promise = getProductsByOrder(order.id).then((products) => {
+                order.products = products;
+            });
+            promises.push(promise);
+        }
+        Promise.all(promises).then(() => {
+            console.log(orders);
+            res.json(orders);
+            
+        });
+    });
+})     
 
 ordersRouter.post('/add', function(req, res) {
-    const order = new Order(1, req.body.idUser, 1, req.body.total, "waiting")
+    const order = new Order(1, req.body.idUser, 1, req.body.total, "VALIDATED")
     createOrder(order).then(message => {
         if ( message = "Order created") {
             getOrderId(order).then((order1) => {
@@ -31,9 +42,9 @@ ordersRouter.post('/add', function(req, res) {
     })
 });
 
-ordersRouter.get('/update/:id', function(req, res) {
-    const order = new Order(1,3,1,50,"Expedié");
-    updateOrder(req.params.id, order).then(message => {
+ordersRouter.post('/update/:id', function(req, res) {
+    const order = new Order(req.params.id, 0, 1, 0, req.body.status)
+    updateOrder(order).then(message => {
         res.json(message)
     })
 });
