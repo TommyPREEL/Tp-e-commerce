@@ -17,7 +17,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
-let pages = ['Products', 'Categories'];
+let pages = ['Products'/*, 'Categories'*/];
 let settings = ['Log in', 'Sign up'];
 
 
@@ -189,6 +189,7 @@ function Header() {
               <Button
                 onClick={() => handleClickPage(page)}
                 key={page}
+                style={{fontWeight:'bold'}}
                 // onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >

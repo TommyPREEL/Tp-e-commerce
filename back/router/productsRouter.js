@@ -17,7 +17,7 @@ productsRouter.get('/details/:id', function(req, res) {
 });
 
 productsRouter.post('/add', function(req, res) {
-    const product = new Product(1, req.body.name, req.body.quantity, req.body.description, req.body.price, null);
+    const product = new Product(1, req.body.name, req.body.quantity, req.body.description, req.body.price, "/pipe.png");
     createProduct(product).then(message => {
         res.json(message)
     })
