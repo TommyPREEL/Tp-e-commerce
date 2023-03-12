@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -7,13 +7,14 @@ import { Dropdown } from 'primereact/dropdown';
 import { Tag } from 'primereact/tag';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber } from 'primereact/inputnumber';
-// import { CustomerService } from './service/CustomerService';
+import { Toast } from 'primereact/toast';
 
 function AdminDashboardOrders() {
 
     const [dialog, setDialog] = useState(false);
-    const [tempStatus, setTempStatus] = useState()
+    
     const [update, setUpdate] = useState(false)
+    const toast = useRef(null);
 
     const ordersStatus = [
         { name: 'VALIDATED'},
@@ -21,6 +22,7 @@ function AdminDashboardOrders() {
         { name: 'DELIVERED'},
         { name: 'CANCELLED'}
     ];
+    const [tempStatus, setTempStatus] = useState()
 
     const emptyOrder = {
         id: 0,
@@ -91,7 +93,6 @@ function AdminDashboardOrders() {
         setSelectedOrder(event.data)
         setTempStatus(event.data.status)
         setDialog(true)
-        console.log(event.data)
     };
     // Cancel button
     function handleClickNo(){
@@ -101,28 +102,33 @@ function AdminDashboardOrders() {
 
     // Save button
     const handleClickYes = () =>{
-        let inputs = {
-            status: tempStatus.name
-        }
-        fetch(`orders/update/${selectedOrder.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(inputs)
-        })
-        .then(response => response.json())
-        .then(dataBack => {
-            setDialog(false);
-            if(dataBack.message === 'Order updated') {
-                setDialog(false)
-                setUpdate(!update)
-                setSelectedOrder(emptyOrder)
+        if(!tempStatus){
+            toast.current.show({severity:'error', summary: 'Error', detail:'Select a status', life: 3000});
+        }else{
+            console.log(tempStatus)
+            let inputs = {
+                status: tempStatus.name
             }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+            fetch(`orders/update/${selectedOrder.id}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(inputs)
+            })
+            .then(response => response.json())
+            .then(dataBack => {
+                setDialog(false);
+                if(dataBack.message === 'Order updated') {
+                    setDialog(false)
+                    setUpdate(!update)
+                    setSelectedOrder(emptyOrder)
+                }
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
     }
 
     // Footer dialog
@@ -135,6 +141,7 @@ function AdminDashboardOrders() {
 
   return (
     <div>
+        <Toast ref={toast} />
         <Dialog header="Update the order status" visible={dialog} style={{ width: '50vw' }} onHide={handleClickNo} footer={dialogFooter}>
                 <div>
                     <div className="flex-auto">
@@ -152,7 +159,7 @@ function AdminDashboardOrders() {
                     <div className="flex-auto">
                     <label htmlFor="status" className="font-bold block mb-2">Status</label>
                         <Dropdown value={tempStatus} onChange={(e) => setTempStatus(e.value)} options={ordersStatus} optionLabel="name" 
-                        editable placeholder="Select a Status" className="w-full md:w-14rem" />
+                        placeholder="Select a Status" className="w-full md:w-14rem" />
                     </div>
                 </div>
             </Dialog>

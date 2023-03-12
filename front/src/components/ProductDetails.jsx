@@ -83,7 +83,7 @@ function ProductDetails() {
       </div>
       <div className="buttons">
         <div className="amount">
-          <button className="minus" onClick={removeQuant} disabled={quant === 0}>
+          <button className="minus" onClick={removeQuant} disabled={quant === 1}>
             -
           </button>
           <p>{quant}</p>
