@@ -39,7 +39,7 @@ usersRouter.post('/update/:id', function(req, res) {
     })
 });
 
-usersRouter.get('/delete/:id', function(req, res) {
+usersRouter.post('/delete/:id', function(req, res) {
     deleteUserById(req.params.id).then(message => {
         res.json(message);
     })

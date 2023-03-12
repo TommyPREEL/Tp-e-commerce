@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'; 
 import { Card } from 'primereact/card';
 import { Divider } from 'primereact/divider';
+import { useNavigate } from'react-router-dom';
 
 export default function Orders() {
     
     const [ orders, setOrders ] = useState(null);
     const [ update, setUpdate ] = useState(false);
+
+    const navigate = useNavigate()
 
     function header(order){
         return(
@@ -30,23 +33,28 @@ export default function Orders() {
     };
 
     useEffect(() => {
-        fetch(`/orders/${JSON.parse(localStorage.getItem('user')).id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          })
-          .then(response => response.json())
-          .then(dataBack => {
-            console.log(dataBack)
-            setOrders(dataBack)
-            if(orders === null){
-                setUpdate(!update)
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
+        if(!localStorage.getItem('user')){
+            navigate('/access_denied');
+        }else{
+            fetch(`/orders/${JSON.parse(localStorage.getItem('user')).id}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+              })
+              .then(response => response.json())
+              .then(dataBack => {
+                console.log(dataBack)
+                setOrders(dataBack)
+                if(orders === null){
+                    setUpdate(!update)
+                }
+              })
+              .catch(error => {
+                console.error(error);
+              });
+        }
+        
     }, [update])
 
     const colors = {

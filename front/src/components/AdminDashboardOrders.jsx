@@ -57,8 +57,6 @@ function AdminDashboardOrders() {
             case 'VALIDATED':
                 return 'warning';
 
-            case 'renewal':
-                return null;
             default:
                 return null;
         }
@@ -135,7 +133,6 @@ function AdminDashboardOrders() {
             <Button label="Save" icon="pi pi-check" onClick={handleClickYes} autoFocus/>
         </React.Fragment>
     );
-
 
   return (
     <div>

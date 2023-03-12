@@ -81,7 +81,7 @@ function Header() {
           navigate('/orders');
           break;
         case 'Settings':
-          navigate('/users/settings');
+          navigate('/settings');
           break;
         case 'Logout':
           fetch('users/logout', {
@@ -91,7 +91,7 @@ function Header() {
             }
           })
           localStorage.removeItem("user");
-          navigate('/');
+          navigate('/users/connect');
           break;
         default:
           navigate('/erreurrr');
@@ -105,7 +105,7 @@ function Header() {
   let welcome;
   let admin;
     if(localStorage.getItem("user") !== null){
-      if(JSON.parse(localStorage.getItem("user")).is_admin == 1){
+      if(JSON.parse(localStorage.getItem("user")).is_admin === 1){
         admin = <div onClick={handleClickAdmin} style={{marginRight:10, cursor:'pointer', backgroundColor:'white', color:"#1976d2", padding:10, borderRadius:'20px'}}>Admin Dashboard</div>;
       }
     welcome = <div style={{marginRight:10}}>{JSON.parse(localStorage.getItem("user")).lastname} {JSON.parse(localStorage.getItem("user")).firstname}</div>;

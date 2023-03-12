@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from'react-router-dom';
+import { useNavigate, Navigate } from'react-router-dom';
 // import ProjectContext from '../context/ProjectContext';
 
 
@@ -21,7 +21,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        The Lord of the Orders
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -29,17 +29,11 @@ function Copyright(props) {
   );
 }
 
-
-
 const theme = createTheme();
 
 function Login() {
 
-  // const {user, setUser} = React.useContext(ProjectContext);
-
   const navigate = useNavigate();
-  
-  const [backendData, setBackendData] = React.useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -58,18 +52,22 @@ function Login() {
     })
     .then(response => response.json())
     .then(dataBack => {
-      // stocker data dans le localStorage ?
       localStorage.setItem('user', JSON.stringify(dataBack));
-      // setUser(dataBack);
       navigate('/');
     })
     .catch(error => {
       console.error(error);
     });
   };
-
+ 
+  const access = () => {
+    if(localStorage.getItem('user'))
+      return <Navigate to='/access_denied'></Navigate>
+  }
+  
   return (
     <ThemeProvider theme={theme}>
+      {access()}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
