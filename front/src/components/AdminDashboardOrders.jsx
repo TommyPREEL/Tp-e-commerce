@@ -12,16 +12,8 @@ import { Toast } from 'primereact/toast';
 function AdminDashboardOrders() {
 
     const [dialog, setDialog] = useState(false);
-    
     const [update, setUpdate] = useState(false)
     const toast = useRef(null);
-
-    const ordersStatus = [
-        { name: 'VALIDATED'},
-        { name: 'PAID'},
-        { name: 'DELIVERED'},
-        { name: 'CANCELLED'}
-    ];
     const [tempStatus, setTempStatus] = useState()
 
     const emptyOrder = {
@@ -105,9 +97,8 @@ function AdminDashboardOrders() {
         if(!tempStatus){
             toast.current.show({severity:'error', summary: 'Error', detail:'Select a status', life: 3000});
         }else{
-            console.log(tempStatus)
             let inputs = {
-                status: tempStatus.name
+                status: tempStatus
             }
             fetch(`orders/update/${selectedOrder.id}`, {
               method: 'POST',
@@ -158,7 +149,7 @@ function AdminDashboardOrders() {
                     </div>
                     <div className="flex-auto">
                     <label htmlFor="status" className="font-bold block mb-2">Status</label>
-                        <Dropdown value={tempStatus} onChange={(e) => setTempStatus(e.value)} options={ordersStatus} optionLabel="name" 
+                        <Dropdown value={tempStatus} onChange={(e) => setTempStatus(e.value)} options={statuses}
                         placeholder="Select a Status" className="w-full md:w-14rem" />
                     </div>
                 </div>

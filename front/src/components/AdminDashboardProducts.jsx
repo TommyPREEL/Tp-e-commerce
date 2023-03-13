@@ -84,35 +84,39 @@ export default function AdminDashboardProducts() {
 
     // Save button
     function handleClickYesAdd(){
-        let inputs = {
-            name: inputTextProductName,
-            description: inputTextProductDescription,
-            price: inputNumberProductPrice,
-            quantity : inputNumberProductQuantity
-          }
-        console.log(inputs)
-        fetch('/products/add', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(inputs)
-    
-        })
-        .then(response =>
-
-            response.json()
-        )
-        .then(dataBack => {
-            setVisible(false);
-            console.log(dataBack.message)
-            if(dataBack.message === 'Product created'){
-                setUpdate(!update)
+        if(inputTextProductName === '' || inputTextProductDescription === '' || inputNumberProductPrice === 0 || inputNumberProductPrice === null || inputNumberProductQuantity === null){
+            toast.current.show({severity:'error', summary: 'Error', detail:'Please fill all fields', life: 3000});
+        }else{
+            let inputs = {
+                name: inputTextProductName,
+                description: inputTextProductDescription,
+                price: inputNumberProductPrice,
+                quantity : inputNumberProductQuantity
             }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+            console.log(inputs)
+            fetch('/products/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(inputs)
+        
+            })
+            .then(response =>
+
+                response.json()
+            )
+            .then(dataBack => {
+                setVisible(false);
+                console.log(dataBack.message)
+                if(dataBack.message === 'Product created'){
+                    setUpdate(!update)
+                }
+            })
+            .catch(error => {
+            console.error(error);
+            });
+        }
     }
 
     // Footer create product dialog
@@ -139,32 +143,36 @@ export default function AdminDashboardProducts() {
 
     // Save button
     const handleClickYesUpdate = () =>{
-        let inputs = {
-            name: editInputTextProductName,
-            description: editInputTextProductDescription,
-            price: editInputNumberProductPrice,
-            quantity : editInputNumberProductQuantity
-          }
-        console.log(inputs)
-        console.log(product.id)
-        fetch(`/products/update/${product.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(inputs)
-    
-        })
-        .then(response => response.json())
-        .then(dataBack => {
-            setEditProductDialog(false);
-            if(dataBack.message === 'Product updated') {
-                setUpdate(!update)
-            }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+        if(editInputTextProductName === '' || editInputTextProductDescription === '' || editInputNumberProductPrice === 0 || editInputNumberProductPrice === null || editInputNumberProductQuantity === null){
+            toast.current.show({severity:'error', summary: 'Error', detail:'Please fill all fields', life: 3000});
+        }else{
+            let inputs = {
+                name: editInputTextProductName,
+                description: editInputTextProductDescription,
+                price: editInputNumberProductPrice,
+                quantity : editInputNumberProductQuantity
+              }
+            console.log(inputs)
+            fetch(`/products/update/${product.id}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(inputs)
+        
+            })
+            .then(response => response.json())
+            .then(dataBack => {
+                setEditProductDialog(false);
+                if(dataBack.message === 'Product updated') {
+                    setUpdate(!update)
+                }
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
+        
     }
 
     // Open the edition dialog
