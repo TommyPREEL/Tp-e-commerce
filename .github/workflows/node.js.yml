@@ -19,4 +19,4 @@ jobs:
       with:
         node-version: '16.13.0'
     - run: cd ./back
-    - run: cd ./back npm test
+    - run: cd ./back; npm test
