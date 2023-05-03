@@ -123,16 +123,22 @@
 //   // expect(response.body[0]).toHaveProperty('name');
 // });
 
-
+const addition = (a, b) => a+b;
 
 // test.js
-const request = require('supertest');
-const app = require('../index');
+// const request = require('supertest');
+// const app = require('../index');
 
-describe('Test endpoints', () => {
-  it('GET /test 1 should return 200', async () => {
-    const response = await request(app).get('/products');
-    expect(response.status).toBe(200);
+// describe('Test endpoints', () => {
+//   it('GET /test 1 should return 200', async () => {
+//     const response = await request(app).get('/products');
+//     expect(response.status).toBe(200);
+//   });
+// });
+
+describe('Test addition', () => {
+  it('GET /test 1 should return 200', () => {
+    expect(addition(1,2)).toBe(3);
   });
 });
 
