@@ -25,9 +25,14 @@ app.use('/users', usersRouter)
 app.use('/categories', categoriesRouter)
 app.use('/orders', ordersRouter)
 
+app.get('/test', function(req, res) {
+  res.sendStatus(200);
+});
 
 
 /* Open the server */
 app.listen(5000, () => {
   console.log("Server start (http://localhost:5000/) !");
 });
+
+module.exports = app;
