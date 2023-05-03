@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000"
+    "test": "jest --testTimeout=10000"
   },
   "devDependencies": {
     "chai": "^4.3.7",
