@@ -12,13 +12,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-        working-directory: ./back
-
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
-
     strategy:
       matrix:
         node-version: [16.13.0]
