@@ -1,7 +1,7 @@
 let express = require('express');
 let productsRouter = express.Router();
 
-const Product = require('../class/product');
+const Product = require('../class/Product');
 const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, deleteProductFromCategorie ,AddCategorieToProduct} = require('../models/products.js')
 
 productsRouter.get('/', function(req, res) {

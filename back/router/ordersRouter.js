@@ -1,7 +1,7 @@
 let express = require('express');
 let ordersRouter = express.Router();
 
-const Order = require('../class/order');
+const Order = require('../class/Order');
 const {getProductsByOrder, updateOrder, getAllOrders, getOrderById,  createOrder, getOrderId , createOrderProducts, getOrdersByUserId} = require('../models/order.js')
 
 ordersRouter.get('/', function(req, res) {
